@@ -1,7 +1,7 @@
 //הפונקציות שצריך
 //getAllEvents for clients
 //getEventById for manager
-//updateEvent for manager - post
+//updateEvent for manager 
 //deleteEvent for manager
 //createEvent for manager - post
 export const createEvent = async (req, res, next) => {
