@@ -1,4 +1,5 @@
 import { Product } from "../models/product.model.js";
+import { isValidObjectId } from "mongoose";
 
 export const getAllProducts = async (req, res, next) => {
     try {
@@ -11,7 +12,14 @@ export const getAllProducts = async (req, res, next) => {
 
 export const addProduct = async (req, res, next) => {
     try {
-        const newProduct = new Product(req.body);        
+        const existingProduct = await Product.findOne({ name: req.body.name });
+
+        if (existingProduct) {
+            existingProduct.stock += (req.body.stock || 1);
+            await existingProduct.save();
+            return res.status(200).json(existingProduct);
+        }
+        const newProduct = new Product(req.body);
         await newProduct.save();
         res.status(201).json(newProduct);
     } catch (err) {
@@ -19,4 +27,34 @@ export const addProduct = async (req, res, next) => {
     }
 };
 
+export const updateProduct = async (req, res, next) => {
+     try {
+        const { id } = req.params;
 
+        if (!isValidObjectId(id)) {
+            return next({
+                error: new Error('product not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+        const updatedProduct = await Product.findByIdAndUpdate(
+            id,
+            { $set: req.body },  
+            { new: true, runValidators: true }      
+        );
+        if (!updatedProduct) {
+            return next({
+                status: 404,
+                error: new Error('Product not found'),
+                type: 'resource not found error'
+            });
+        }
+        res.status(200).json(updatedProduct);
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};
+
+
+    
