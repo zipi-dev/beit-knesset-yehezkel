@@ -56,5 +56,28 @@ export const updateProduct = async (req, res, next) => {
     }
 };
 
+export const deleteProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!isValidObjectId(id)) {
+            return next({
+                error: new Error('product not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+        const deletedProduct = await Product.findByIdAndDelete(id);
 
-    
+        if (deletedProduct) {
+            return res.status(204).send();
+        }
+        return next({
+            error: new Error('product not found'),
+            type: 'resource not found error',
+            status: 404
+        });
+        
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};
