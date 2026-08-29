@@ -1,12 +1,16 @@
 import { model, Schema } from "mongoose";
 
 const shiurimSchema = new Schema({
-    title: {
+    titleHebrew: {
     type: String,
     required: true,
     trim: true
   },
-  lecturer: {
+  titleEnglish: {
+    type: String,
+    trim: true
+  },
+  description: {
     type: String,
     required: true,
     trim: true
@@ -27,6 +31,8 @@ const shiurimSchema = new Schema({
 })
 
 shiurSchema.index({ date: -1 });
+
+shiurimSchema.index({ titleHebrew: 'text', titleEnglish: 'text', description: 'text' });
 
 const Shiur = mongoose.model('Shiur', shiurSchema);
 

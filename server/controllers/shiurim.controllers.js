@@ -62,3 +62,59 @@ export const getShiurById = async (req, res, next) => {
     }
 };
 
+
+export const getTitlesSuggestions = async (req, res, next) => {
+    try {
+        const { search = '' } = req.query;
+        if (!search.trim()) {
+            return res.status(200).json([]);
+        }
+        const suggestions = await Shiur.find(
+            { $text: { $search: search } }, 
+            { titleHebrew: 1, titleEnglish: 1 }
+        ).limit(10);
+        res.status(200).json(suggestions);
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};
+
+export const getAllShiurim = async (req, res, next) => {
+    try {
+        const { category, search = '', page = 1, perPage = 15, sort = 'newest' } = req.query;
+
+        const filter = {};
+
+        if (category) {
+            filter.categories = category;
+        }
+
+        if (search.trim()) {
+            filter.$text = { $search: search }; 
+        }
+
+        const parsedPage = Number(page);
+        const parsedLimit = Number(perPage);
+        const sortDirection = sort === 'oldest' ? 1 : -1;
+
+        const shiurim = await Shiur.find(filter)
+            .sort({ date: sortDirection })   
+            .skip((parsedPage - 1) * parsedLimit)
+            .limit(parsedLimit);
+
+        res.status(200).json(shiurim);
+
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};
+
+export const getAllCategories = async (req, res, next) => {
+    try {
+        // Use the distinct method to get unique categories from the Shiurim collection
+        const categories = await Shiur.distinct('categories');
+        res.status(200).json(categories);
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};
