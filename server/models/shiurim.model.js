@@ -27,13 +27,16 @@ const shiurimSchema = new Schema({
   date: {
     type: Date,
     required: true 
+  },
+  rabbi: {
+    type: Schema.Types.ObjectId,
+    ref: 'Rabbi' ,
+    required: true
   }
 })
 
-shiurSchema.index({ date: -1 });
+shiurimSchema.index({ date: -1 });
 
 shiurimSchema.index({ titleHebrew: 'text', titleEnglish: 'text', description: 'text' });
 
-const Shiur = mongoose.model('Shiur', shiurSchema);
-
-export default Shiur;
+export const Shiur = model('Shiur', shiurimSchema);

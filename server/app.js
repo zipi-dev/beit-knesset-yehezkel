@@ -3,13 +3,14 @@ import { connectDB } from './config/db.js';
 import { env } from './config/env.js';
 import {errorHandler} from './middlewares/error.middleware.js';
 import productRoutes from './routes/products.router.js';
+import shiurimRoutes from './routes/shiurim.router.js';
 
 const app = express();
 
-// התחברות לדטהבייס
+// Connect to the database
 connectDB();
 
-app.use(express.json()); // מאפשר לקבל באדי - אוביקט
+app.use(express.json()); // can get body
 
 
 app.get('/', (req, res) => {
@@ -17,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/products',productRoutes);
-
+app.use('/shiurim', shiurimRoutes);
 
 app.use(errorHandler);
 

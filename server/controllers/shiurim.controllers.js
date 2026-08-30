@@ -48,7 +48,7 @@ export const getShiurById = async (req, res, next) => {
                 status: 400
             });
         }
-        const shiur = await Shiur.findById(id);
+        const shiur = await Shiur.findById(id).populate('rabbi'); //bring also the rabbi details    
         if (!shiur) {
             return next({
                 error: new Error('Shiur not found'),
@@ -114,6 +114,34 @@ export const getAllCategories = async (req, res, next) => {
         // Use the distinct method to get unique categories from the Shiurim collection
         const categories = await Shiur.distinct('categories');
         res.status(200).json(categories);
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};
+
+export const updateShiur = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        if (!isValidObjectId(id)) {
+            return next({
+                error: new Error('Invalid ID format'),
+                type: 'validation error',
+                status: 400
+            });
+        }
+        const updatedShiur = await Shiur.findByIdAndUpdate(id, req.body, { 
+            new: true, 
+            runValidators: true 
+        });
+        if (!updatedShiur) {
+            return next({
+                error: new Error('Shiur not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+        res.status(200).json(updatedShiur);
     } catch (err) {
         next({ status: 500, error: err, type: 'server error' });
     }
