@@ -46,5 +46,31 @@ export const deleteRabbi = async (req, res, next) => {
     }
 };
 
+export const updateRabbi = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!isValidObjectId(id)) {
+            return next({
+                error: new Error('Invalid ID format'),
+                type: 'validation error',
+                status: 400
+            });
+        }
+        const updatedRabbi = await Rabbi.findByIdAndUpdate(id, req.body, {
+            new: true,   // Return the updated document 
+            runValidators: true // Ensure that the update adheres to the schema's validation rules
+        });
 
+        if (!updatedRabbi) {
+            return next({
+                error: new Error('Rabbi not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+        res.status(200).json(updatedRabbi);
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};
 
