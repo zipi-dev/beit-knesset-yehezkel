@@ -81,12 +81,16 @@ export const getTitlesSuggestions = async (req, res, next) => {
 
 export const getAllShiurim = async (req, res, next) => {
     try {
-        const { category, search = '', page = 1, perPage = 15, sort = 'newest' } = req.query;
+        const { category,rabbi, search = '', page = 1, perPage = 15, sort = 'newest' } = req.query;
 
         const filter = {};
 
         if (category) {
             filter.categories = category;
+        }
+
+        if (rabbi) { // Check if rabbi is provided in the query
+            filter.rabbi = rabbi;
         }
 
         if (search.trim()) {
