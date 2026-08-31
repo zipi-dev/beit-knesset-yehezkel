@@ -73,4 +73,3 @@ export const updateRabbi = async (req, res, next) => {
         next({ status: 500, error: err, type: 'server error' });
     }
 };
-

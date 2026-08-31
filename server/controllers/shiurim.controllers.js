@@ -62,7 +62,6 @@ export const getShiurById = async (req, res, next) => {
     }
 };
 
-
 export const getTitlesSuggestions = async (req, res, next) => {
     try {
         const { search = '' } = req.query;
@@ -81,7 +80,7 @@ export const getTitlesSuggestions = async (req, res, next) => {
 
 export const getAllShiurim = async (req, res, next) => {
     try {
-        const { category,rabbi, search = '', page = 1, perPage = 15, sort = 'newest' } = req.query;
+        const { category, rabbi, search = '', page = 1, perPage = 15, sort = 'newest' } = req.query;
 
         const filter = {};
 
@@ -89,12 +88,25 @@ export const getAllShiurim = async (req, res, next) => {
             filter.categories = category;
         }
 
-        if (rabbi) { // Check if rabbi is provided in the query
+        if (rabbi) {
             filter.rabbi = rabbi;
         }
 
-        if (search.trim()) {
-            filter.$text = { $search: search }; 
+        if (search.trim()) { //if we have a search term, we will search in the titleHebrew, titleEnglish, description and also in the rabbi name
+            const matchingRabbis = await Rabbi.find({ //find rabbis whose name matches the search term
+                name: { $regex: search, $options: 'i' } 
+            }).select('_id');
+
+            const rabbiIds = matchingRabbis.map(r => r._id); //return IDs of the matching rabbis
+            filter.$or = [
+                { titleHebrew: { $regex: search, $options: 'i' } },
+                { titleEnglish: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ];
+
+            if (rabbiIds.length > 0) { //if we have matching rabbis, we will also search for shiurim that belong to those rabbis
+                filter.$or.push({ rabbi: { $in: rabbiIds } });
+            }
         }
 
         const parsedPage = Number(page);
@@ -104,7 +116,7 @@ export const getAllShiurim = async (req, res, next) => {
         const shiurim = await Shiur.find(filter)
             .sort({ date: sortDirection })   
             .skip((parsedPage - 1) * parsedLimit)
-            .limit(parsedLimit);
+            .limit(parsedLimit)
 
         res.status(200).json(shiurim);
 
