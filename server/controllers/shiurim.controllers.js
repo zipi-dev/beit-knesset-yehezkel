@@ -1,5 +1,6 @@
 import {Shiur} from "../models/shiurim.model.js";
 import { isValidObjectId } from "mongoose";
+import { Rabbi } from "../models/rabbi.model.js";
 
 export const deleteShiur = async (req, res, next) => {
     try {
