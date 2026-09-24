@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const blessingSchema = new mongoose.Schema({
+const blessingSchema = new Schema({
   name: {
     type: String,
     required: true,

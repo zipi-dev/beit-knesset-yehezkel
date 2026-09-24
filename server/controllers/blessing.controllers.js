@@ -10,3 +10,18 @@ export const createBlessing = async (req, res, next) => {
         next({ status: 500, error: err, type: 'server error' });
     }
 };
+
+export const getLatestBlessings = async (req, res, next) => {
+    try {
+        const blessings = await Blessing.find()
+            .sort({ createdAt: -1 }) 
+            .limit(15);  
+
+        res.status(200).json({
+            success: true,
+            data: blessings
+        });
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
+    }
+};

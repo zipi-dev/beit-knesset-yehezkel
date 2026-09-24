@@ -5,6 +5,7 @@ import {errorHandler} from './middlewares/error.middleware.js';
 import productRoutes from './routes/products.router.js';
 import shiurimRoutes from './routes/shiurim.router.js';
 import rabbiRoutes from './routes/rabbi.router.js';
+import blessRoutes from './routes/bless.router.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 app.use('/products',productRoutes);
 app.use('/shiurim', shiurimRoutes);
 app.use('/rabbis', rabbiRoutes);
+app.use('/blessings', blessRoutes);
 
 app.use(errorHandler);
 
