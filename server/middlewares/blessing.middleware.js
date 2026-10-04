@@ -11,8 +11,8 @@ export const validateBlessing = (req, res, next) => {
     if (error) {
         return next({ 
             status: 400, 
-            type: 'validation error', 
-            error: { message: error.details[0].message } 
+            type: 'validation error',
+            error: { message: error.details[0].message }
         });
     }
     next();
