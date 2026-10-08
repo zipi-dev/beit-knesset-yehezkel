@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { connectDB } from './config/db.js';
 import { env } from './config/env.js';
 import {errorHandler} from './middlewares/error.middleware.js';
@@ -15,6 +16,8 @@ connectDB();
 
 // Schedule the blessings email task
 scheduleBlessingsEmail();
+
+app.use(cors({ origin: 'http://127.0.0.1:5500' }));
 
 app.use(express.json()); // can get body
 

@@ -15,11 +15,11 @@ const shiurimSchema = new Schema({
     required: true,
     trim: true
   },
-  categories: {
-    type: [String],
-    required: true,
-    default: []
-  },
+  // categories: {
+  //   type: [String],
+  //   required: true,
+  //   default: []
+  // },
   mediaUrl: {
     type: String,
     trim: true
