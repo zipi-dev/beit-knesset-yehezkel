@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body dir="rtl">
+    <header>
+        <h1>שיעורי תורה</h1>
+        <p>מבחר שיעורים מפי רבני בית הכנסת</p>
+    </header>
+
+   <main>
+        <!-- Search and live autocomplete section -->
+        <section>
+            <div>
+                <input 
+                    type="text" 
+                    id="shiur-search-input" 
+                    placeholder="חפש שיעור, רב או נושא..." 
+                    autocomplete="off"
+                >
+                <div id="suggestions-box"></div>
+            </div>
+        </section>
+
+        <!-- Rabbis strip section -->
+        <section>
+            <h2>רבני בית הכנסת</h2>
+            <div id="rabbis-container">
+                <!-- Rabbis cards will be injected dynamically here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Shiurim grid section -->
+        <section>
+            <h2>השיעורים האחרונים</h2>
+            <div id="shiurim-container">
+                <!-- Shiurim cards will be injected dynamically here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Pagination section -->
+        <section id="pagination-container">
+            <button id="prev-page-btn" disabled>&larr; עמוד קודם</button>
+            <span id="page-indicator">עמוד 1</span>
+            <button id="next-page-btn">עמוד הבא &rarr;</button>
+        </section>
+    </main>
+    
+</body>
+</html>
