@@ -115,6 +115,7 @@ export const getAllShiurim = async (req, res, next) => {
         const sortDirection = sort === 'oldest' ? 1 : -1;
 
         const shiurim = await Shiur.find(filter)
+            .populate('rabbi') //bring also the rabbi details
             .sort({ date: sortDirection })   
             .skip((parsedPage - 1) * parsedLimit)
             .limit(parsedLimit)

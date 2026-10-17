@@ -26,11 +26,32 @@ const loadRabbisSection = async () => {
     rabbisContainer.appendChild(fragment); // into the DOM
 };
 
+const loadShiurim = async (filters = {}) => {
+    const shiurim = await getAllShiurim(filters);
+    const shiurimContainer = document.getElementById('shiurim-container'); 
+    
+    if (!shiurimContainer) return;
+
+    shiurimContainer.replaceChildren(); // clear existing content
+    const fragment = document.createDocumentFragment();
+
+    shiurim.forEach(shiur => {
+        const shiurCard = createShiurCard(shiur);
+        fragment.appendChild(shiurCard);
+    });
+
+    shiurimContainer.appendChild(fragment);
+};
+
+
+
 const initShiurimPage = async () => {
     try {
-        await loadRabbisSection();
-
-//I have to add here ...
+        // Fetch rabbis and initial shiurim in parallel for optimal performance
+        await Promise.all([
+            loadRabbisSection(),
+            loadShiurim()
+        ]);
 
     } catch (error) {
         console.error('שגיאה באתחול עמוד השיעורים:', error.message);

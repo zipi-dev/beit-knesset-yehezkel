@@ -10,11 +10,7 @@ const shiurimSchema = new Schema({
     type: String,
     trim: true
   },
-  description: {
-    type: String,
-    required: true,
-    trim: true
-  },
+
   // categories: {
   //   type: [String],
   //   required: true,
@@ -37,6 +33,6 @@ const shiurimSchema = new Schema({
 
 shiurimSchema.index({ date: -1 });
 
-shiurimSchema.index({ titleHebrew: 'text', titleEnglish: 'text', description: 'text' });
+shiurimSchema.index({ titleHebrew: 'text', titleEnglish: 'text' });
 
 export const Shiur = model('Shiur', shiurimSchema);
