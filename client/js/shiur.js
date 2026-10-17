@@ -17,16 +17,13 @@ const getYouTubeThumbnail = (url) => {
  * @param {Object} shiur - The shiur data object (including media URL and rabbi details)
  * @returns {HTMLElement} - The ready-to-use shiur card element
  */
-const createShiurCard = (shiur) => {
-
+export const createShiurCard = (shiur) => {
     const card = document.createElement('article');
     card.classList.add('shiur-card');
-
     let imageUrl = '';
-    
     //use the YouTube thumbnail if the mediaUrl is a valid YouTube link 
     if (shiur.mediaUrl) {
-        const videoId = extractYouTubeId(shiur.mediaUrl);
+        const videoId = getYouTubeThumbnail(shiur.mediaUrl);
         if (videoId) {
             imageUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
         }
@@ -65,3 +62,4 @@ const createShiurCard = (shiur) => {
 
     return card;
 };
+
