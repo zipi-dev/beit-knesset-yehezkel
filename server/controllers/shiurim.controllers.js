@@ -1,6 +1,7 @@
 import {Shiur} from "../models/shiurim.model.js";
 import { isValidObjectId } from "mongoose";
 import { Rabbi } from "../models/rabbi.model.js";
+import {getCurParshiyot} from "../services/shiurimService.js";
 
 export const deleteShiur = async (req, res, next) => {
     try {
@@ -109,6 +110,16 @@ export const getAllShiurim = async (req, res, next) => {
                 filter.$or.push({ rabbi: { $in: rabbiIds } });
             }
         }
+        let featuredData = { featuredShiurim: [], excludedIds: [] };
+        if (Number(page) === 1 && !search.trim() && !rabbi) {
+            const rabbiName =req.query.rabbiName || "";
+            featuredData = await getCurParshiyot(rabbiName);
+        }
+
+        if (featuredData.excludedIds.length > 0) {
+            filter._id = { ...filter._id, $nin: featuredData.excludedIds };
+        }
+
 
         const parsedPage = Number(page);
         const parsedLimit = Number(perPage);
@@ -120,7 +131,11 @@ export const getAllShiurim = async (req, res, next) => {
             .skip((parsedPage - 1) * parsedLimit)
             .limit(parsedLimit)
 
-        res.status(200).json(shiurim);
+        res.status(200).json({
+            featuredShiurim: featuredData.featuredShiurim,
+            shiurim,
+            currentPage: parsedPage
+        });
 
     } catch (err) {
         next({ status: 500, error: err, type: 'server error' });
