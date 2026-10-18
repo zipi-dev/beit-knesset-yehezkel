@@ -5,7 +5,8 @@ const eventSchema = new Schema({
     name: { type: String, required: true },        // שם האירוע
     eventDate: { type: Date, required: true },     // תאריך האירוע
     description: {text:{ type: String, required: false }}, // תיאור האירוע
-    photographer: String                           // מי צילם את האירוע
+    photographer: String   ,                        // מי צילם את האירוע
+    mediaUrl: { type: String, trim: true }         // כתובת המדיה (למשל תמונה או וידאו)
 });
 
 export const Event = model('events', eventSchema);

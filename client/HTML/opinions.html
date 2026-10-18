@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חוות דעת - בית הכנסת</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>מה אומרים עלינו</h1>
+    </header>
+
+    <main>
+        <!-- טופס הוספת חוות דעת חדשה -->
+        <section class="add-opinion-section">
+            <h2>הוסף חוות דעת</h2>
+            <form id="add-opinion-form">
+                <div>
+                    <label for="userName">שם מלא:</label>
+                    <input type="text" id="userName" required placeholder="הכנס את שמך">
+                </div>
+
+                <div>
+                    <label for="rating">דירוג (1 עד 5):</label>
+                    <select id="rating" required>
+                        <option value="5">5 - מעולה ★★★★★</option>
+                        <option value="4">4 - טוב מאוד ★★★★☆</option>
+                        <option value="3">3 - בינוני ★★★☆☆</option>
+                        <option value="2">2 - טעון שיפור ★★☆☆☆</option>
+                        <option value="1">1 - חלש ★☆☆☆☆</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="comment">תוכן חוות הדעת:</label>
+                    <textarea id="comment" required placeholder="שתף אותנו בחוויה שלך..."></textarea>
+                </div>
+
+                <button type="submit">שלח חוות דעת</button>
+            </form>
+        </section>
+
+        <hr>
+
+        <!-- אזור הצגת כל חוות הדעת -->
+        <section>
+            <h2>חוות דעת של מתפללים ומבקרים</h2>
+            <div id="opinions-container">
+                <p>טוען חוות דעת...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- טעינת סקריפט ה-JS של חוות הדעת -->
+    <script type="module" src="../js/opinionMenu.js"></script>
+</body>
+</html>

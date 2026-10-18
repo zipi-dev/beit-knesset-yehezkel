@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { connectDB } from './config/db.js';
 import { env } from './config/env.js';
 import {errorHandler} from './middlewares/error.middleware.js';
@@ -19,7 +20,7 @@ connectDB();
 // Schedule the blessings email task
 scheduleBlessingsEmail();
 
-
+app.use(cors()); 
 app.use(express.json()); // מאפשר לקבל באדי - אוביקט
 app.use('/api/event', eventRoutes);
 app.use('/api/opinion', opinionRoutes); 

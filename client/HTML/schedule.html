@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>זמני תפילות וזמני היום - בית הכנסת</title>
+    <!-- קישור לקובץ העיצוב שלך -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>זמני תפילות וזמני היום</h1>
+    </header>
+
+    <main>
+        <!-- חלק 1: לוח זמני התפילות של בית הכנסת (שחרית, מנחה, ערבית) -->
+        <section class="schedule-section">
+            <h2>לוח תפילות בית הכנסת</h2>
+            <div id="schedule-container">
+                <p>טוען זמני תפילות...</p>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- חלק 2: זמני היום ההלכתיים (זריחה, שקיעה, סוף זמן ק"ש וכד') -->
+        <section class="zmanim-section">
+            <h2>זמני היום ההלכתיים</h2>
+            <div id="zmanim-container">
+                <p>טוען זמני היום...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- טעינת הבקר (Controller) שמנהל את הטעינה והתצוגה בדף -->
+    <script type="module" src="../js/scheduleMenu.js"></script>
+</body>
+</html>
