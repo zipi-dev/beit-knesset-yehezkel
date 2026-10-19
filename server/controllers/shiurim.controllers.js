@@ -131,11 +131,12 @@ export const getAllShiurim = async (req, res, next) => {
             .skip((parsedPage - 1) * parsedLimit)
             .limit(parsedLimit)
 
-        res.status(200).json({
-            featuredShiurim: featuredData.featuredShiurim,
-            shiurim,
-            currentPage: parsedPage
-        });
+        const allShiurimCombined = [
+            ...featuredData.featuredShiurim,
+            ...shiurim
+        ];
+
+        res.status(200).json(allShiurimCombined);
 
     } catch (err) {
         next({ status: 500, error: err, type: 'server error' });
