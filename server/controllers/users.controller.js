@@ -63,3 +63,43 @@ export const login = async (req, res, next) => {
         next({ status: 500, error, type: 'server error' });
     }
 };
+
+export const updateUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+    // Check if the user exists and update the user        
+        const updatedUser = await User.findByIdAndUpdate(id, req.body, { 
+            new: true, 
+            runValidators: true 
+        });
+
+        if (!updatedUser) {
+            return next({ 
+                status: 404, 
+                type: 'not found', 
+                error: { message: 'המשתמש לא נמצא' } 
+            });
+        }
+        res.json(updatedUser);
+    } catch (error) {
+        next({ status: 500, error, type: 'server error' });
+    }
+};
+
+export const deleteUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        
+        const deletedUser = await User.findByIdAndDelete(id);
+        if (!deletedUser) {
+            return next({ 
+                status: 404, 
+                type: 'not found', 
+                error: { message: 'המשתמש לא נמצא' } 
+            });
+        }
+        res.json({ message: 'המשתמש נמחק בהצלחה' });
+    } catch (error) {
+        next({ status: 500, error, type: 'server error' });
+    }
+};
