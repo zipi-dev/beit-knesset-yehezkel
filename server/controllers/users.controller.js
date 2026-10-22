@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.model.js';
-import {craeteToken} from '../services/jwt.service.js';
+import {createToken} from '../services/jwt.service.js';
 import {env} from '../config/env.js';
 
 export const getAllUsers = async (req, res, next) => {

@@ -4,7 +4,7 @@ import { env } from "../config/env.js";
 
 const userSchema = new Schema({
     name: String,
-    email: String,  
+    username: String,  
     password: String,
     role: String,
     rabbiProfile: {
