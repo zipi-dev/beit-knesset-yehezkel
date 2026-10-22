@@ -3,6 +3,16 @@ import { isValidObjectId } from "mongoose";
 import { Rabbi } from "../models/rabbi.model.js";
 import {getCurParshiyot} from "../services/shiurimService.js";
 
+//Function to check if the user is authorized to modify a shiur
+const isAuthorizedToModifyShiur = (user, shiur) => {
+    if (user.role === 'admin') return true;
+    //If the user is a rabbi, check if the shiur belongs to him  
+    if (user.rabbiProfile && shiur.rabbi && shiur.rabbi.toString() === user.rabbiProfile.toString()) {
+        return true;
+    }
+    return false;
+};
+
 export const deleteShiur = async (req, res, next) => {
     try {
     const { id } = req.params; 
@@ -13,22 +23,30 @@ export const deleteShiur = async (req, res, next) => {
         status: 404
       });
     }
-    const deletedShiur = await Shiur.findByIdAndDelete(id);
-    if (deletedShiur) {
-      return res.status(204).send();
+
+    const shiur = await Shiur.findById(id);
+        if (!shiur) {
+            return next({
+                error: new Error('Shiur not found'),
+                type: 'resource not found error',
+                status: 404
+            });
+        }
+
+    if (!isAuthorizedToModifyShiur(req.myUser, shiur)) {
+                return next({
+                status: 403,
+                type: 'authorization error',
+                error: new Error('You do not have permission to delete this shiur')
+            });
+        }
+    await Shiur.findByIdAndDelete(id);
+        return res.status(204).send();
+
+    } catch (err) {
+        next({ status: 500, error: err, type: 'server error' });
     }
-    return next({
-      error: new Error('Shiur not found'),
-      type: 'resource not found error',
-      status: 404
-    });
-
-  } catch (err) {
-    next({ status: 500, error: err, type: 'server error' });
-  }
-
-
-};
+    };   
 
 export const addShiur = async (req, res, next) => {
     try {
@@ -164,17 +182,28 @@ export const updateShiur = async (req, res, next) => {
                 status: 400
             });
         }
-        const updatedShiur = await Shiur.findByIdAndUpdate(id, req.body, { 
-            new: true, 
-            runValidators: true 
-        });
-        if (!updatedShiur) {
+
+        const shiur = await Shiur.findById(id);
+        if (!shiur) {
             return next({
                 error: new Error('Shiur not found'),
                 type: 'resource not found error',
                 status: 404
             });
         }
+
+        if (!isAuthorizedToModifyShiur(req.myUser, shiur)) {
+            return next({
+                status: 403,
+                type: 'authorization error',
+                error: new Error('You do not have permission to update this shiur')
+            });
+        }
+
+        const updatedShiur = await Shiur.findByIdAndUpdate(id, req.body, { 
+            new: true, 
+            runValidators: true 
+        });
         res.status(200).json(updatedShiur);
     } catch (err) {
         next({ status: 500, error: err, type: 'server error' });
