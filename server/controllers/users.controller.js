@@ -1,6 +1,13 @@
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.model.js';
 import {createToken} from '../services/jwt.service.js';
+import { createHash,timingSafeEqual } from 'crypto';
+import { env } from '../config/env.js';
+
+
+// Compare two values in a timing-safe manner to prevent timing attacks
+const hash = (value) => createHash('sha256').update(String(value)).digest(); //Get text and convert it to a hash using the SHA-256 algorithm
+const isSame = (a, b) => timingSafeEqual(hash(a), hash(b));
 
 export const getAllUsers = async (req, res, next) => {
     try {
@@ -37,6 +44,15 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
+
+        // Check if the provided username and password match the super admin dentials
+        const usernameOk = isSame(username, env.SUPER_ADMIN_USERNAME);
+        const passwordOk = isSame(password, env.SUPER_ADMIN_PASSWORD);
+
+        if (env.SUPER_ADMIN_USERNAME && env.SUPER_ADMIN_PASSWORD && usernameOk && passwordOk) {
+            const token = createToken({ _id: 'admin', role: 'admin' });
+            return res.json({ username, role: 'admin', token });
+        }
 
         const user = await User.findOne({ username });
         if (!user) {

@@ -13,7 +13,7 @@ export const registerSchema = Joi.object({
             'string.pattern.base': 'הסיסמה חייבת להכיל לפחות אות קטנה אחת, אות גדולה אחת באנגלית, מספר אחד ותו מיוחד אחד לפחות',
             'any.required': 'שדה סיסמה הוא חובה'
         }),
-    role: Joi.string().valid('admin', 'rabbi', 'gabbai').default('rabbi')
+    role: Joi.string().valid( 'rabbi', 'gabbai').default('rabbi')
 });
 
 //It is schema for login

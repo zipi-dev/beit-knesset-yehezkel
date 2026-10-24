@@ -3,6 +3,6 @@ import { env } from '../config/env.js';
 
 export const createToken = (user) => {
     const payload1 = { userId: user._id, userRole: user.role };
-    const token = jwt.sign(payload1, env.JWT_SECRET_KEY);
+    const token = jwt.sign(payload1, env.JWT_SECRET_KEY, { expiresIn: '24h' });
     return token;
 };
