@@ -2,7 +2,6 @@ import Joi from 'joi';
 
 //Validation schema for user registration
 export const registerSchema = Joi.object({
-    name: Joi.string().required().trim().min(2),
     username: Joi.string().required().trim(),
     password: Joi.string()
         .required()
@@ -13,7 +12,16 @@ export const registerSchema = Joi.object({
             'string.pattern.base': 'הסיסמה חייבת להכיל לפחות אות קטנה אחת, אות גדולה אחת באנגלית, מספר אחד ותו מיוחד אחד לפחות',
             'any.required': 'שדה סיסמה הוא חובה'
         }),
-    role: Joi.string().valid( 'rabbi', 'gabbai').default('rabbi')
+        role: Joi.string().valid('rabbi', 'gabbai').required(),
+        rabbi: Joi.when('role', {
+        is: 'rabbi',
+        then: Joi.object({
+            name: Joi.string().trim().min(2).required(),
+            imageUrl: Joi.string().trim().required(),
+            bio: Joi.string().trim().required()
+        }).required(),
+        otherwise: Joi.forbidden()
+    })
 });
 
 //It is schema for login
@@ -23,7 +31,6 @@ export const loginSchema = Joi.object({
 });
 
 export const updateUserSchema = Joi.object({
-    name: Joi.string().trim().min(2),
     username: Joi.string().trim(),
     password: Joi.string()
         .min(7)

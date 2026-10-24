@@ -3,6 +3,8 @@ import { User } from '../models/user.model.js';
 import {createToken} from '../services/jwt.service.js';
 import { createHash,timingSafeEqual } from 'crypto';
 import { env } from '../config/env.js';
+import { Rabbi } from '../models/rabbi.model.js';
+import { isValidObjectId } from 'mongoose';
 
 
 // Compare two values in a timing-safe manner to prevent timing attacks
@@ -11,7 +13,9 @@ const isSame = (a, b) => timingSafeEqual(hash(a), hash(b));
 
 export const getAllUsers = async (req, res, next) => {
     try {
-        const users = await User.find();
+        const users = await User.find()
+            .select('-password')
+            .populate('rabbiProfile', 'name');
         res.json(users);
     } catch (error) {
         next({ status: 500, error, type: 'server error' });
@@ -19,24 +23,58 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const register = async (req, res, next) => {
+    let newRabbi = null;
     try {
-        const { username } = req.body;
-        const existingUser = await User.findOne({ username });
-        if (existingUser) {
-            return next({ 
-                status: 400, 
-                type: 'validation error', 
-                error: { message: 'שם המשתמש כבר קיים במערכת, אנא בחר שם משתמש אחר' } 
+        const { username, password, role, rabbi } = req.body;
+
+        // אסור ליצור משתמש עם שם המשתמש של המנהל הראשי
+        if (username === env.SUPER_ADMIN_USERNAME) {
+            return next({
+                status: 400,
+                type: 'validation error',
+                error: { message: 'שם המשתמש כבר קיים במערכת, אנא בחר שם משתמש אחר' }
             });
         }
 
-        const user = new User(req.body);
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return next({
+                status: 400,
+                type: 'validation error',
+                error: { message: 'שם המשתמש כבר קיים במערכת, אנא בחר שם משתמש אחר' }
+            });
+        }
+
+        // Create a new rabbi profile if the role is 'rabbi'
+        let rabbiProfile = null;
+        if (role === 'rabbi') {
+            newRabbi = await Rabbi.create(rabbi);
+            rabbiProfile = newRabbi._id;
+        }
+
+        const user = new User({ username, password, role, rabbiProfile });
         await user.save();
 
-        const token = createToken(user);
-
-        res.json({ username: user.username, role: user.role, token });
+        res.status(201).json({
+            _id: user._id,
+            username: user.username,
+            role: user.role,
+            rabbiProfile: user.rabbiProfile
+        });
     } catch (error) {
+        // If a rabbi profile was created but the user creation failed, delete the rabbi profile to avoid orphaned records
+        if (newRabbi) {
+            await Rabbi.findByIdAndDelete(newRabbi._id).catch(() => {});
+        }
+
+        //If admin touch twice the same username
+        if (error.code === 11000) {
+            return next({
+                status: 400,
+                type: 'validation error',
+                error: { message: 'שם המשתמש כבר קיים במערכת, אנא בחר שם משתמש אחר' }
+            });
+        }
         next({ status: 500, error, type: 'server error' });
     }
 };
@@ -83,21 +121,60 @@ export const login = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
     try {
         const { id } = req.params;
-    // Check if the user exists and update the user        
-        const updatedUser = await User.findByIdAndUpdate(id, req.body, { 
-            new: true, 
-            runValidators: true 
-        });
-
-        if (!updatedUser) {
-            return next({ 
-                status: 404, 
-                type: 'not found', 
-                error: { message: 'המשתמש לא נמצא' } 
+        if (!isValidObjectId(id)) {
+            return next({
+                status: 404,
+                type: 'not found',
+                error: { message: 'המשתמש לא נמצא' }
             });
         }
-        res.json(updatedUser);
+
+        const user = await User.findById(id);
+        if (!user) {
+            return next({
+                status: 404,
+                type: 'not found',
+                error: { message: 'המשתמש לא נמצא' }
+            });
+        }
+
+        const { username, password } = req.body;
+
+        //Not allowed to change the username to the super admin username
+        if (username && username !== user.username) {
+            const taken =
+                username === env.SUPER_ADMIN_USERNAME ||
+                await User.exists({ username });
+            if (taken) {
+                return next({
+                    status: 400,
+                    type: 'validation error',
+                    error: { message: 'שם המשתמש כבר קיים במערכת, אנא בחר שם משתמש אחר' }
+                });
+            }
+            user.username = username;
+        }
+
+        if (password) {
+            user.password = password;
+        }
+
+        await user.save();
+
+        res.json({
+            _id: user._id,
+            username: user.username,
+            role: user.role,
+            rabbiProfile: user.rabbiProfile
+        });
     } catch (error) {
+        if (error.code === 11000) {
+            return next({
+                status: 400,
+                type: 'validation error',
+                error: { message: 'שם המשתמש כבר קיים במערכת, אנא בחר שם משתמש אחר' }
+            });
+        }
         next({ status: 500, error, type: 'server error' });
     }
 };
@@ -105,13 +182,20 @@ export const updateUser = async (req, res, next) => {
 export const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
-        
+        if (!isValidObjectId(id)) {
+            return next({
+                status: 404,
+                type: 'not found',
+                error: { message: 'המשתמש לא נמצא' }
+            });
+        }
+
         const deletedUser = await User.findByIdAndDelete(id);
         if (!deletedUser) {
-            return next({ 
-                status: 404, 
-                type: 'not found', 
-                error: { message: 'המשתמש לא נמצא' } 
+            return next({
+                status: 404,
+                type: 'not found',
+                error: { message: 'המשתמש לא נמצא' }
             });
         }
         res.json({ message: 'המשתמש נמחק בהצלחה' });

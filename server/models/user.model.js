@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import { env } from "../config/env.js";
 
 const userSchema = new Schema({
-    name: String,
     username: { type: String, required: true, unique: true, trim: true },  
     password: String,
     role: String,
