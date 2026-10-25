@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {deleteShiur,addShiur,getShiurById, getTitlesSuggestions, getAllShiurim,getAllCategories,updateShiur} from "../controllers/shiurim.controllers.js";
+import {deleteShiur,addShiur,getShiurById, getTitlesSuggestions, getAllShiurim,updateShiur} from "../controllers/shiurim.controllers.js";
 import { verifyToken, requireRole } from "../middlewares/auth.middleware.js";
 
 
