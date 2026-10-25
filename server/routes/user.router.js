@@ -9,8 +9,8 @@ const router = Router();
 router.get("/",verifyToken,requireRole('admin'), getAllUsers);
 router.post("/register", verifyToken, requireRole('admin'), validate(registerSchema), register);
 router.post("/login", validate(loginSchema), login);
-router.put("/:id", validate(updateUserSchema), updateUser);
-router.delete("/:id", deleteUser);
+router.put("/:id", verifyToken, requireRole('admin'), validate(updateUserSchema), updateUser);
+router.delete("/:id", verifyToken, requireRole('admin'), deleteUser);
 
 
 export default router;

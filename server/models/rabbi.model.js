@@ -16,4 +16,5 @@ const rabbiSchema = new Schema({
   }
 });
 
+// Only one rabbi can be the main rabbi
 export const Rabbi = model('Rabbi', rabbiSchema);

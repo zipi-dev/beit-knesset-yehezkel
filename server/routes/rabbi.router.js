@@ -1,10 +1,10 @@
 import { Router } from "express";
-import {getAllRabbis,addRabbi,deleteRabbi,updateRabbi} from "../controllers/rabbi.controllers.js"; 
+import {getAllRabbis, deleteRabbi, updateRabbi} from "../controllers/rabbi.controllers.js";
+import { verifyToken, requireRole } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 router.get('/', getAllRabbis);
-router.post('/', addRabbi);
-router.delete('/:id', deleteRabbi);
-router.put('/:id', updateRabbi);
+router.put('/:id', verifyToken, requireRole('admin', 'rabbi'), updateRabbi);
+router.delete('/:id', verifyToken, requireRole('admin'), deleteRabbi);
 
 export default router;

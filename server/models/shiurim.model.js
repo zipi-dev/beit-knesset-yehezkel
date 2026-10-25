@@ -11,11 +11,6 @@ const shiurimSchema = new Schema({
     trim: true
   },
 
-  // categories: {
-  //   type: [String],
-  //   required: true,
-  //   default: []
-  // },
   mediaUrl: {
     type: String,
     trim: true
@@ -31,7 +26,8 @@ const shiurimSchema = new Schema({
   }
 })
 
-shiurimSchema.index({ date: -1 });
+shiurimSchema.index({ date: -1, _id: -1 });
+shiurimSchema.index({ rabbi: 1, date: -1, _id: -1 });
 
 shiurimSchema.index({ titleHebrew: 'text', titleEnglish: 'text' });
 
