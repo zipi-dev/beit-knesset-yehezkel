@@ -1,4 +1,4 @@
-import {getAllShiurim, getShiurById,getTitlesSuggestions} from './services/shiurimService.js';
+import {getAllShiurim, getShiurById,getTitlesSuggestions} from '../services/shiurimService.js';
 import {createShiurCard} from 'shiur.js';
 import {getAllRabbis} from './services/rabbiService.js';
 import {createRabbiCard} from 'rabbi.js';
@@ -116,9 +116,7 @@ const initShiurimPage = async () => {
         } catch (error) {
         console.error('שגיאה באתחול עמוד השיעורים:', error.message);
     }
-};
-        
-  
+};  
 
 //when the DOM is fully loaded, initialize the shiurim page
 document.addEventListener('DOMContentLoaded', initShiurimPage);

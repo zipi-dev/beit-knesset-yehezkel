@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+  <script type="module" src="../js/shiurimPage.js"></script>
 <body dir="rtl">
     <header>
         <h1>שיעורי תורה</h1>
@@ -17,11 +18,11 @@
             <div>
                 <input 
                     type="text" 
-                    id="shiur-search-input" 
+                    id="search-input" 
                     placeholder="חפש שיעור, רב או נושא..." 
                     autocomplete="off"
                 >
-                <div id="suggestions-box"></div>
+                <div id="suggestions-container" class="hidden"></div>
             </div>
         </section>
 
@@ -41,11 +42,9 @@
             </div>
         </section>
 
-        <!-- Pagination section -->
-        <section id="pagination-container">
-            <button id="prev-page-btn" disabled>&larr; עמוד קודם</button>
-            <span id="page-indicator">עמוד 1</span>
-            <button id="next-page-btn">עמוד הבא &rarr;</button>
+                <!-- Load more button -->
+        <section>
+            <button id="load-more-btn" class="hidden">טען עוד</button>
         </section>
     </main>
     
