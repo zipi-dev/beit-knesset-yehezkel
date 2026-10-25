@@ -1,3 +1,5 @@
+import { DEFAULT_RABBI_IMAGE } from '../config.js';
+
 /**
  * Extracts a YouTube thumbnail URL (supports standard, short, and Shorts links with basic security validation).
  * 
@@ -28,7 +30,7 @@ export const createShiurCard = (shiur) => {
     
     // if not a YouTube link, use the rabbi's image or a default image
     if (!imageUrl) {
-        imageUrl = shiur.rabbiImage || shiur.rabbi?.imageUrl || 'default-rabbi-image-example.jpg';
+        imageUrl = shiur.rabbiImage || shiur.rabbi?.imageUrl || DEFAULT_RABBI_IMAGE;
     }
 
     if (shiur.mediaUrl) {
