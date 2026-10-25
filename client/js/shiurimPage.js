@@ -1,8 +1,8 @@
-import {getAllShiurim, getShiurById,getTitlesSuggestions} from '../services/shiurimService.js';
-import {createShiurCard} from 'shiur.js';
-import {getAllRabbis} from './services/rabbiService.js';
-import {createRabbiCard} from 'rabbi.js';
-import {setupSearchAutocomplete} from 'searchAutocomplete.js';
+import {getAllShiurim, getShiurById} from '../services/shiurimService.js';
+import {createShiurCard} from './shiur.js';
+import {getAllRabbis} from '../services/rabbiService.js';
+import {createRabbiCard} from './rabbi.js';
+import {setupSearchAutocomplete} from './searchAutocomplete.js';
 let currentPage = 1;
 let currentFilters = {};
 

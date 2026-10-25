@@ -22,11 +22,8 @@ export const createShiurCard = (shiur) => {
     card.classList.add('shiur-card');
     let imageUrl = '';
     //use the YouTube thumbnail if the mediaUrl is a valid YouTube link 
-    if (shiur.mediaUrl) {
-        const videoId = getYouTubeThumbnail(shiur.mediaUrl);
-        if (videoId) {
-            imageUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-        }
+        if (shiur.mediaUrl) {
+        imageUrl = getYouTubeThumbnail(shiur.mediaUrl) || '';
     }
     
     // if not a YouTube link, use the rabbi's image or a default image

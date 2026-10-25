@@ -1,4 +1,4 @@
-import { getTitlesSuggestions, getShiurById } from './services/shiurimService.js'; 
+import { getTitlesSuggestions } from '../services/shiurimService.js'; 
 
 const createSuggestionItem = (item, onSelect) => {
     const suggestionItem = document.createElement('div');
@@ -43,7 +43,7 @@ export const setupSearchAutocomplete = (onSearchSelect, onShiurSelectById) => {
         // ממתין 300 מילי-שניות מרגע ההקלדה האחרונה לפני שליחה לשרת
         debounceTimer = setTimeout(async () => {
             try {
-                const suggestions = await getTitlesSuggestions({ search: query });
+                const suggestions = await getTitlesSuggestions(query);
                 suggestionsContainer.replaceChildren();
 
                 if (suggestions.length === 0) {

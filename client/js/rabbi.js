@@ -4,7 +4,7 @@ export const createRabbiCard = (rabbi) => {
 
     // Rabbi image element
     const img = document.createElement('img');
-    img.src = rabbi.imageUrl || 'default-rabbi.jpg';
+    img.src = rabbi.imageUrl || '../assest/images/defaultRabbiPicture.png'; 
     img.alt = rabbi.name || 'הרב';
     img.classList.add('rabbi-avatar');
 
