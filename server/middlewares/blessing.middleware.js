@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 export const validateBlessing = (req, res, next) => {
-    const nameRegex = /^[א-תa-zA-Z\s]+$/;
+ const nameRegex = /^[א-תa-zA-Z\s'׳\-]+$/;
     const schema = Joi.object({
         name: Joi.string().pattern(nameRegex).required(),
         motherName: Joi.string().pattern(nameRegex).required(),

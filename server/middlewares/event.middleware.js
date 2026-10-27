@@ -1,72 +1,35 @@
+import Joi from 'joi';
+
 export const validateEvent = (req, res, next) => {
-    // שלפנו גם את description מתוך ה-req.body
-    const { id, name, eventDate, photographer, description } = req.body;
+    const schema = Joi.object({
+        name: Joi.string().trim().max(200).required().messages({
+            'string.empty': 'יש להזין שם לאירוע',
+            'any.required': 'שם האירוע הוא שדה חובה'
+        }),
+        eventDate: Joi.date().required().messages({
+            'date.base': 'תאריך האירוע אינו תקין',
+            'any.required': 'תאריך האירוע הוא שדה חובה'
+        }),
+        description: Joi.object({
+            text: Joi.string().trim().max(2000).allow('').optional()
+        }).optional(),
+        photographer: Joi.string().trim().max(100).allow('').optional(),
+        // רק http/https - חוסם כתובות מסוכנות כמו javascript:
+        mediaUrl: Joi.string().trim().uri({ scheme: ['http', 'https'] }).allow('').optional().messages({
+            'string.uri': 'קישור המדיה אינו תקין'
+        })
+    });
 
-    // בודקים ID רק אם מדובר בבקשת PUT (עדכון). ב-POST (יצירה) אין עדיין ID במסד הנתונים
-    if (req.method === 'PUT' && !id) {
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
         return next({
             status: 400,
-            error: new Error('Event ID is required for update'),
-            type: 'validation error'
+            type: 'validation error',
+            error: { message: error.details[0].message }
         });
     }
 
-    // בדיקת שדות חובה ליצירה/עדכון (ללא ID)
-    if (!name || !eventDate) {
-        return next({
-            status: 400,
-            error: new Error('Event name and event date are required fields'),
-            type: 'validation error'
-        });
-    }
-
-    if (typeof name !== 'string' || name.trim() === '') {
-        return next({
-            status: 400,
-            error: new Error('Event name must be a non-empty string'),
-            type: 'validation error'
-        });
-    }
-    req.body.name = name.trim(); // Trim whitespace from the name
-
-    const eventDateObj = new Date(eventDate);
-    if (isNaN(eventDateObj.getTime())) {
-        return next({
-            status: 400,
-            error: new Error('Event date must be a valid date'),
-            type: 'validation error'
-        });
-    }
-    req.body.eventDate = eventDateObj; // Convert to Date object
-
-    if (photographer !== undefined && photographer !== null) {
-        if (typeof photographer !== 'string' || photographer.trim() === '') {
-            return next({
-                status: 400,
-                error: new Error('Photographer must be a non-empty string'),
-                type: 'validation error'
-            });
-        }
-        req.body.photographer = photographer.trim();
-    } else {
-        req.body.photographer = undefined;
-    }
-
-    // בדיקת תקינות ל-description (מוודאים שהוא אובייקט ולא מערך או טיפוס אחר)
-    if (description !== undefined && description !== null) {
-        if (typeof description !== 'object' || Array.isArray(description)) {
-            return next({
-                status: 422,
-                error: new Error('Description must be an object'),
-                type: 'validation error'
-            });
-        }
-        
-        // אם יש טקסט בתוך האובייקט, מנקים רווחים מיותרים
-        if (description.text && typeof description.text === 'string') {
-            description.text = description.text.trim();
-        }
-    }
-
-    next(); // Proceed to the next middleware or route handler
+    req.body = value; // הנתונים המנוקים (trim והמרת תאריך)
+    next();
 };

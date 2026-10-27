@@ -4,26 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>לוח אירועים - בית הכנסת</title>
-    <!-- קישור לקובץ העיצוב שלך -->
-    <link rel="stylesheet" href="css/events.css">
+    <!-- שמות התיקיות חייבים להתאים בדיוק (אותיות קטנות/גדולות) לשמות בפרויקט -->
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-    <!-- כותרת ראשית של העמוד -->
-    <header>
-        <h1>לוח האירועים שלנו</h1>
-    </header>
-
-    <!-- האזור המרכזי שבו הקוד הדינמי יכניס את כל כרטיסי האירועים -->
     <main>
+        <!-- page-header קיים ב-style.css. לא משתמשים בתגית header כדי שלא תתנגש עם סרגל הניווט -->
+        <section class="page-header">
+            <h1>לוח האירועים שלנו</h1>
+        </section>
+
         <section id="events-container">
-            <!-- הודעת ברירת מחדל בזמן שהנתונים נטענים מהשרת -->
             <p>טוען אירועים...</p>
         </section>
     </main>
 
-    <!-- קובץ ה-JS הראשי (המנהל/Controller) שמפעיל את הטעינה. 
-         חובה לשים type="module" כדי שנוכל להשתמש ב-import/export -->
     <script type="module" src="../js/eventsMenu.js"></script>
 </body>
 </html>
