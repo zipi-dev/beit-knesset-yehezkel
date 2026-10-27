@@ -1,9 +1,10 @@
-import {getAllShiurim, getShiurById, deleteShiur} from '../services/shiurimService.js';
 import {getCurrentUser} from '../services/authService.js';
 import {createShiurCard} from './shiur.js';
 import {getAllRabbis} from '../services/rabbiService.js';
 import {createRabbiCard} from './rabbi.js';
 import {setupSearchAutocomplete} from './searchAutocomplete.js';
+import {getAllShiurim, getShiurById, deleteShiur, addShiur} from '../services/shiurimService.js';
+import {openShiurDialog} from '../admin/js/shiurDialog.js';
 
 let currentPage = 1;
 let currentFilters = {};
@@ -27,6 +28,33 @@ const handleDelete = async (shiur, card) => {
         card.remove();
     } catch (error) {
         alert(error.message);
+    }
+};
+
+
+const handleAdd = async () => {
+    const isAdmin = currentUser.role === 'admin';
+    const rabbis = isAdmin ? await getAllRabbis() : [];
+
+    openShiurDialog({
+        title: 'הוספת שיעור',
+        submitLabel: 'הוסף',
+        rabbis,
+        isAdmin,
+        onSave: async (data) => {
+            await addShiur(data);
+            loadShiurim({}, true); // reload the list so the new shiur appears
+        }
+    });
+};
+
+const initAddButton = () => {
+    const addBtn = document.getElementById('add-shiur-btn');
+    if (!addBtn || !currentUser) return;
+
+    if (['admin', 'rabbi'].includes(currentUser.role)) {
+        addBtn.classList.remove('hidden');
+        addBtn.addEventListener('click', handleAdd);
     }
 };
 
@@ -101,6 +129,7 @@ const loadShiurim = async (filters = {}, isReset = false) => {
 
 
 const initShiurimPage = async () => {
+    initAddButton();
     try {
         // Fetch rabbis and initial shiurim in parallel for optimal performance
         await Promise.all([

@@ -75,4 +75,13 @@ const updateShiur = async (id, data) => {
     return await handleResponse(response); 
 };
 
-export { getAllShiurim, getShiurById, getTitlesSuggestions, deleteShiur, updateShiur };
+const addShiur = async (data) => {
+    const response = await fetch(URL, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data)
+    });
+    return await handleResponse(response);
+};
+
+export { getAllShiurim, getShiurById, getTitlesSuggestions, deleteShiur, updateShiur,addShiur };
