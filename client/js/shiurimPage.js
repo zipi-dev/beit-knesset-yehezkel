@@ -1,10 +1,38 @@
-import {getAllShiurim, getShiurById} from '../services/shiurimService.js';
+import {getAllShiurim, getShiurById, deleteShiur} from '../services/shiurimService.js';
+import {getCurrentUser} from '../services/authService.js';
 import {createShiurCard} from './shiur.js';
 import {getAllRabbis} from '../services/rabbiService.js';
 import {createRabbiCard} from './rabbi.js';
 import {setupSearchAutocomplete} from './searchAutocomplete.js';
+
 let currentPage = 1;
 let currentFilters = {};
+
+// Are we on the admin page? (the admin page has data-admin on its body)
+const isAdminPage = document.body.hasAttribute('data-admin');
+const currentUser = getCurrentUser();
+
+// Does the logged-in user have the right to change this shiur? (the server checks this again)
+const canManage = (shiur) => {
+    if (!isAdminPage || !currentUser) return false;
+    if (currentUser.role === 'admin') return true; // the main manager: all the shiurim
+    return currentUser.role === 'rabbi' && shiur.rabbi?._id === currentUser.rabbiProfile; // a rabbi: only his own
+};
+
+// Ask for confirmation, delete in the server, and remove the card from the screen
+const handleDelete = async (shiur, card) => {
+    if (!confirm(`למחוק את השיעור "${shiur.titleHebrew}"?`)) return;
+    try {
+        await deleteShiur(shiur._id);
+        card.remove();
+    } catch (error) {
+        alert(error.message);
+    }
+};
+
+// What the card receives: a delete function only if the user may manage this shiur
+const cardOptions = (shiur) => (canManage(shiur) ? { onDelete: handleDelete } : {});
+
 
 const loadRabbisSection = async () => {
     const rabbis = await getAllRabbis();
@@ -56,7 +84,7 @@ const loadShiurim = async (filters = {}, isReset = false) => {
 
     const fragment = document.createDocumentFragment();
     shiurim.forEach(shiur => {
-        const shiurCard = createShiurCard(shiur);
+        const shiurCard = createShiurCard(shiur, cardOptions(shiur));
         fragment.appendChild(shiurCard);
     });
 

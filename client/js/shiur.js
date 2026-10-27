@@ -19,7 +19,7 @@ const getYouTubeThumbnail = (url) => {
  * @param {Object} shiur - The shiur data object (including media URL and rabbi details)
  * @returns {HTMLElement} - The ready-to-use shiur card element
  */
-export const createShiurCard = (shiur) => {
+export const createShiurCard = (shiur, { onDelete } = {}) => {
     const card = document.createElement('article');
     card.classList.add('shiur-card');
     let imageUrl = '';
@@ -57,6 +57,23 @@ export const createShiurCard = (shiur) => {
     title.classList.add('shiur-title');
 
     contentDiv.appendChild(title);
+
+
+        // Admin page only: the delete button (the page decides who gets it)
+    if (onDelete) {
+        const actions = document.createElement('div');
+        actions.classList.add('shiur-actions');
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.textContent = 'מחק';
+        deleteBtn.classList.add('shiur-btn', 'shiur-btn--delete');
+        deleteBtn.addEventListener('click', () => onDelete(shiur, card));
+
+        actions.appendChild(deleteBtn);
+        contentDiv.appendChild(actions);
+    }
+
     card.appendChild(contentDiv);
 
     return card;
