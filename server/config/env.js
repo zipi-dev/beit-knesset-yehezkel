@@ -3,5 +3,8 @@ export const env = {
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     BCRYPT_ROUNDS: +process.env.BCRYPT_ROUNDS,
     PORT: process.env.PORT,
+    SUPER_ADMIN_USERNAME: process.env.SUPER_ADMIN_USERNAME,
+    SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD,
+    MAIN_RABBI_ID: process.env.MAIN_RABBI_ID
 };
 

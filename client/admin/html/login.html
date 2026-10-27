@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>התחברות | בית הכנסת יחזקאל</title>
+    <link rel="stylesheet" href="../../css/shiurim.css">
+    <script type="module" src="../js/loginPage.js"></script>
+</head>
+
+<body dir="rtl">
+    <main>
+        <h1>התחברות</h1>
+
+        <form id="login-form">
+            <label for="username">שם משתמש</label>
+            <input type="text" id="username" autocomplete="username" required>
+
+            <label for="password">סיסמה</label>
+            <input type="password" id="password" autocomplete="current-password" required>
+
+            <p id="login-error" class="hidden" role="alert"></p>
+            <button type="submit">התחבר</button>
+        </form>
+    </main>
+</body>
+</html>

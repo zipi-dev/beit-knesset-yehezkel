@@ -1,5 +1,5 @@
-import { Product } from "../models/product.model.js";
-import { isValidObjectId } from "mongoose";
+//import { Product } from "../models/product.model.js";
+//import { isValidObjectId } from "mongoose";
 
 export const getAllProducts = async (req, res, next) => {
     try {

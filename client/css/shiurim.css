@@ -1,0 +1,508 @@
+/* =====================================================
+   Shiurim page - cream, gold and brown, with a blue logo
+   Built mobile-first: the base styles are for phones,
+   the @media (min-width) blocks at the bottom enlarge
+   things for tablets and computers.
+   ===================================================== */
+
+:root {
+    --cream: #faf6ee;
+    --paper: #fffdf8;
+    --gold: #c49a3c;
+    --gold-soft: #e9dcb8;
+    --gold-dark: #8f6a1c;
+    --brown: #3b2a1c;
+    --brown-soft: #7a6552;
+    --blue: #3f86c9;
+    --blue-soft: #e6f0fa;
+    --blue-deep: #1f4f82;
+    --shadow: 0 4px 14px rgba(59, 42, 28, 0.08);
+    --shadow-hover: 0 10px 24px rgba(59, 42, 28, 0.16);
+    --font-title: "Frank Ruhl Libre", "David Libre", "David", Georgia, serif;
+    --font-body: "Heebo", "Segoe UI", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--brown);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    max-width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------- Header ---------- */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding: 12px 70px 10px;
+    padding-top: max(12px, env(safe-area-inset-top));
+    text-align: center;
+    background: rgba(250, 246, 238, 0.96);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--gold-soft);
+}
+
+header h1 {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+header p {
+    margin: 2px 0 0;
+    color: var(--brown-soft);
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
+/* Logo: top right, light blue, easy to press */
+.site-logo {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    background: var(--blue-soft);
+    border: 2px solid var(--blue);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(63, 134, 201, 0.15);
+    transition: box-shadow 0.2s;
+}
+
+.site-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.site-logo:hover {
+    box-shadow: 0 0 0 5px rgba(63, 134, 201, 0.28);
+}
+
+/* Search icon button: top left */
+.search-toggle {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--gold-dark);
+    background: var(--paper);
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.search-toggle svg {
+    width: 21px;
+    height: 21px;
+}
+
+.search-toggle:hover,
+.search-toggle[aria-expanded="true"] {
+    color: var(--paper);
+    background: var(--gold);
+}
+
+/* ---------- Search ---------- */
+main > section:first-child {
+    padding: 14px 0 0;
+}
+
+main > section:first-child > div {
+    position: relative;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+#search-input {
+    width: 100%;
+    padding: 12px 20px;
+    font: inherit;
+    font-size: 16px; /* 16px stops iPhones from zooming in on the box */
+    color: var(--brown);
+    background: var(--paper);
+    border: 1.5px solid var(--gold-soft);
+    border-radius: 999px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search-input::placeholder {
+    color: var(--brown-soft);
+    opacity: 0.8;
+}
+
+#search-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(196, 154, 60, 0.2);
+}
+
+#suggestions-container {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    left: 0;
+    z-index: 30;
+    max-height: 260px;
+    overflow-y: auto;
+    background: var(--paper);
+    border: 1px solid var(--gold-soft);
+    border-radius: 14px;
+    box-shadow: var(--shadow-hover);
+}
+
+.suggestion-item {
+    padding: 13px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(233, 220, 184, 0.6);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item:active {
+    background: var(--cream);
+}
+
+/* ---------- Page layout ---------- */
+main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 14px 40px;
+}
+
+main h2 {
+    margin: 26px 0 14px;
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Small gold line under each section title */
+main h2::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 3px;
+    margin: 7px auto 0;
+    background: var(--gold);
+    border-radius: 2px;
+}
+
+/* ---------- Rabbis strip: scrolls sideways with a finger ---------- */
+#rabbis-container {
+    display: flex;
+    justify-content: safe center;
+    align-items: flex-end;
+    gap: 18px;
+    padding: 10px 6px 14px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+#rabbis-container::-webkit-scrollbar {
+    display: none;
+}
+
+.rabbi-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    font: inherit;
+    color: var(--brown);
+    background: none;
+    border: none;
+    cursor: pointer;
+    scroll-snap-align: center;
+}
+
+.rabbi-avatar {
+    width: 68px;
+    height: 68px;
+    object-fit: cover;
+    background: var(--paper);
+    border: 3px solid var(--gold-soft);
+    border-radius: 50%;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.rabbi-name {
+    max-width: 92px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* The main rabbi is bigger than the others */
+.rabbi-item--main .rabbi-avatar {
+    width: 92px;
+    height: 92px;
+    border-color: var(--gold);
+}
+
+.rabbi-item--main .rabbi-name {
+    max-width: 110px;
+    font-family: var(--font-title);
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+/* The selected rabbi gets a gold ring */
+.rabbi-item.active .rabbi-avatar {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--cream), 0 0 0 6px var(--gold);
+}
+
+.rabbi-item.active .rabbi-name {
+    color: var(--gold-dark);
+    font-weight: 700;
+}
+
+/* ---------- Shiurim: one card per row on a phone ---------- */
+#shiurim-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.shiur-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--paper);
+    border: 1px solid var(--gold-soft);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.25s, border-color 0.25s;
+}
+
+.shiur-image-link {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--gold-soft);
+}
+
+.shiur-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* A small play button on the picture */
+.shiur-image-link::after {
+    content: "\25B6";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    padding-left: 4px;
+    font-size: 18px;
+    color: var(--paper);
+    background: rgba(59, 42, 28, 0.55);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shiur-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px 16px;
+}
+
+.shiur-title {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.shiur-rabbi {
+    color: var(--gold-dark);
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.shiur-date {
+    color: var(--brown-soft);
+    font-size: 0.82rem;
+}
+
+/* ---------- Load more ---------- */
+main > section:last-of-type {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+}
+
+#load-more-btn {
+    min-width: 180px;
+    min-height: 48px;
+    padding: 12px 36px;
+    font: inherit;
+    font-weight: 500;
+    color: var(--brown);
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#load-more-btn:hover,
+#load-more-btn:active {
+    background: var(--gold);
+}
+
+/* ---------- Keyboard focus ---------- */
+.search-toggle:focus-visible,
+.site-logo:focus-visible,
+.rabbi-item:focus-visible .rabbi-avatar,
+.shiur-image-link:focus-visible,
+#load-more-btn:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+}
+
+/* ---------- Tablet (from 600px) ---------- */
+@media (min-width: 600px) {
+    header {
+        padding: 16px 90px 14px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    header p {
+        font-size: 0.92rem;
+    }
+
+    .site-logo {
+        right: 20px;
+        width: 58px;
+        height: 58px;
+    }
+
+    .search-toggle {
+        left: 20px;
+        width: 46px;
+        height: 46px;
+    }
+
+    main {
+        padding: 0 20px 56px;
+    }
+
+    #rabbis-container {
+        gap: 26px;
+    }
+
+    .rabbi-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .rabbi-item--main .rabbi-avatar {
+        width: 108px;
+        height: 108px;
+    }
+
+    #shiurim-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+    }
+}
+
+/* ---------- Computer (from 960px) ---------- */
+@media (min-width: 960px) {
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    .site-logo {
+        right: 32px;
+        width: 66px;
+        height: 66px;
+    }
+
+    .search-toggle {
+        left: 32px;
+    }
+
+    #shiurim-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 26px;
+    }
+
+    /* Hover effects only where there is a mouse */
+    .shiur-card:hover {
+        border-color: var(--gold);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .rabbi-item:hover .rabbi-avatar {
+        border-color: var(--gold);
+    }
+}
+
+/* ---------- Less motion for people who ask for it ---------- */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/shiurim.css">
+     <script type="module" src="../js/shiurimPage.js"></script>
+</head>
+ 
+<body dir="rtl">
+    <header>
+        <h1>שיעורי תורה</h1>
+    </header>
+
+   <main>
+        <!-- Search and live autocomplete section -->
+        <section>
+            <div>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="חפש שיעור, רב או נושא..." 
+                    autocomplete="off"
+                >
+                <div id="suggestions-container" class="hidden"></div>
+            </div>
+        </section>
+
+        <!-- Rabbis strip section -->
+        <section>
+            <h2>מבחר שיעורים מרבני בית הכנסת</h2>
+            <div id="rabbis-container">
+                <!-- Rabbis cards will be injected dynamically here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Shiurim grid section -->
+        <section>
+            <div id="shiurim-container">
+                <!-- Shiurim cards will be injected dynamically here by JavaScript -->
+            </div>
+        </section>
+
+                <!-- Load more button -->
+        <section>
+            <button id="load-more-btn" class="hidden">טען עוד</button>
+        </section>
+    </main>
+    
+</body>
+</html>

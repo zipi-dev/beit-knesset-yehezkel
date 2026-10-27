@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ניהול שיעורים | בית הכנסת יחזקאל</title>
+    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/shiurim.css">
+    <script type="module" src="../../js/shiurimPage.js"></script>
+    <script type="module" src="../js/adminGuard.js"></script>
+</head>
+
+<body dir="rtl" data-admin>
+    <header>
+        <h1>ניהול שיעורים</h1>
+        <p id="admin-greeting"></p>
+        <button id="logout-btn" type="button">התנתק</button>
+    </header>
+
+    <main>
+
+        <section>
+            <div>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="חפש שיעור, רב או נושא..." 
+                    autocomplete="off"
+                >
+                <div id="suggestions-container" class="hidden"></div>
+            </div>
+        </section>
+
+        <!-- Rabbis section -->
+        <section>
+            <div class="rabbis-head">
+                <h2>רבני בית הכנסת</h2>
+            </div>
+            <div id="rabbis-container">
+                <!-- Rabbis cards will be injected dynamically here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Shiurim grid section -->
+        <section>
+            <h2>השיעורים</h2>
+            <div id="shiurim-container">
+                <!-- Shiurim cards will be injected dynamically here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Load more button -->
+        <section>
+            <button id="load-more-btn" class="hidden" type="button">טען עוד</button>
+        </section>
+    </main>
+</body>
+</html>
