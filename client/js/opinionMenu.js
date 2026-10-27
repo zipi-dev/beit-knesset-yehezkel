@@ -1,13 +1,22 @@
+import createHeader from './header.js';
+import createFooter from './footer.js';
 import { getOpinions, addOpinion } from '../services/opinionService.js';
 import { createOpinionCard } from './opinion.js';
 
-// 1. הפעלה אוטומטית ברגע שהדף נטען
-document.addEventListener('DOMContentLoaded', () => {
-    loadOpinions();
+
+async function initOpinionPage() {
+    createHeader();
     setupFormListener();
+    await loadOpinions();
+    createFooter();
+}
+
+//  הפעלה אוטומטית ברגע שהדף נטען
+document.addEventListener('DOMContentLoaded', () => {
+    initOpinionPage();
 });
 
-// 2. פונקציה להבאת חוות הדעת מהשרת והצגתן
+//  פונקציה להבאת חוות הדעת מהשרת והצגתן
 async function loadOpinions() {
     const container = document.getElementById('opinions-container');
     if (!container) return;
@@ -24,7 +33,7 @@ async function loadOpinions() {
     }
 }
 
-// 3. פונקציית רינדור הרשימה (משתמשת ב-replaceChildren וב-createElement בלבד)
+//  פונקציית רינדור הרשימה (משתמשת ב-replaceChildren וב-createElement בלבד)
 function renderOpinionsList(opinions, container) {
     if (!opinions || opinions.length === 0) {
         const emptyMsg = document.createElement('p');
@@ -41,27 +50,31 @@ function renderOpinionsList(opinions, container) {
 
 // 4. פונקציה המטפלת בשליחת טופס הוספת חוות דעת חדשה
 function setupFormListener() {
-    const form = document.getElementById('add-opinion-form');
+    const form = document.getElementById('opinion-form');
     if (!form) return;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault(); // מונע ריענון אוטומטי של הדף
 
-        // איסוף הנתונים מהשדות בטופס ה-HTML
+
+        const submitBtn = form.querySelector('button[type="submit"]');
         const opinionData = {
             userName: document.getElementById('userName').value.trim(),
-            rating: Number(document.getElementById('rating').value),
             comment: document.getElementById('comment').value.trim()
         };
-
+ 
+        submitBtn.disabled = true;
         try {
-            await addOpinion(opinionData); // שליחה לשרת דרך ה-Service
+            await addOpinion(opinionData);
             alert('חוות הדעת נשלחה בהצלחה!');
-            form.reset();     // איפוס שדות הטופס
-            loadOpinions();   // רענון רשימת חוות הדעת במסך כדי לראות את החדשה
+            form.reset();
+            await loadOpinions(); // רענון הרשימה כדי לראות את החדשה
         } catch (error) {
             console.error('שגיאה בשליחת חוות הדעת:', error);
-            alert('אירעה שגיאה בשליחת חוות הדעת, אנא נסו שוב.');
+            // אם השרת החזיר הודעה (למשל ולידציה) מציגים אותה
+            alert(error.message || 'אירעה שגיאה בשליחת חוות הדעת, אנא נסו שוב.');
+        } finally {
+            submitBtn.disabled = false;
         }
     });
 }
