@@ -14,12 +14,21 @@ const getYouTubeThumbnail = (url) => {
     return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
 };
 
+const createActionButton = (text, modifier, onClick) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = text;
+    btn.classList.add('shiur-btn', `shiur-btn--${modifier}`);
+    btn.addEventListener('click', onClick);
+    return btn;
+};
+
 /**
  * Creates a shiur card element based on the provided shiur data.
  * @param {Object} shiur - The shiur data object (including media URL and rabbi details)
  * @returns {HTMLElement} - The ready-to-use shiur card element
  */
-export const createShiurCard = (shiur, { onDelete } = {}) => {
+export const createShiurCard = (shiur, { onEdit,onDelete } = {}) => {
     const card = document.createElement('article');
     card.classList.add('shiur-card');
     let imageUrl = '';
@@ -59,20 +68,18 @@ export const createShiurCard = (shiur, { onDelete } = {}) => {
     contentDiv.appendChild(title);
 
 
-        // Admin page only: the delete button (the page decides who gets it)
-    if (onDelete) {
-        const actions = document.createElement('div');
-        actions.classList.add('shiur-actions');
+        // Admin page only: the delete button or update
+    if (onEdit || onDelete) {
+    const actions = document.createElement('div');
+    actions.classList.add('shiur-actions');
 
-        const deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.textContent = 'מחק';
-        deleteBtn.classList.add('shiur-btn', 'shiur-btn--delete');
-        deleteBtn.addEventListener('click', () => onDelete(shiur, card));
+    if (onEdit) actions.appendChild(createActionButton('ערוך', 'edit', () => onEdit(shiur, card)));
+    if (onDelete) actions.appendChild(createActionButton('מחק', 'delete', () => onDelete(shiur, card)));
 
-        actions.appendChild(deleteBtn);
-        contentDiv.appendChild(actions);
-    }
+    contentDiv.appendChild(actions);
+}
+
+
 
     card.appendChild(contentDiv);
 

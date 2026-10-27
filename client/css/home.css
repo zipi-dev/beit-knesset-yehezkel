@@ -1,0 +1,32 @@
+body {
+    margin: 0; /* so the hero touches the edges of the screen */
+}
+
+/* The area fills the whole screen: width and height, on any device */
+.hero {
+    --header-height: 0px; /* when the header is added, put its real height here */
+    position: relative;
+    width: 100%;
+    height: calc(100vh - var(--header-height));  /* for older browsers */
+    height: calc(100svh - var(--header-height)); /* phones: not affected by the browser's address bar */
+    min-height: 280px;
+    overflow: hidden;
+}
+
+/* Every image lies on top of the others, and only the "active" one is visible */
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;               /* fills the area without stretching the image */
+    object-position: center center;  /* which part of the image stays visible */
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.hero-slide.active {
+    opacity: 1;
+}
+

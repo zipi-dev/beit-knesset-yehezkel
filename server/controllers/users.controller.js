@@ -89,7 +89,7 @@ export const login = async (req, res, next) => {
 
         if (env.SUPER_ADMIN_USERNAME && env.SUPER_ADMIN_PASSWORD && usernameOk && passwordOk) {
             const token = createToken({ _id: 'admin', role: 'admin' });
-            return res.json({ username, role: 'admin', token });
+            return res.json({ username, role: 'admin', rabbiProfile: env.MAIN_RABBI_ID, token });
         }
 
         const user = await User.findOne({ username });
@@ -111,7 +111,7 @@ export const login = async (req, res, next) => {
             });
         }
         const token = createToken(user);
-        res.json({ username: user.username, role: user.role, token });
+        res.json({ username: user.username, role: user.role, rabbiProfile: user.rabbiProfile, token });
 
     } catch (error) {
         next({ status: 500, error, type: 'server error' });

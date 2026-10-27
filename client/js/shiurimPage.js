@@ -3,7 +3,7 @@ import {createShiurCard} from './shiur.js';
 import {getAllRabbis} from '../services/rabbiService.js';
 import {createRabbiCard} from './rabbi.js';
 import {setupSearchAutocomplete} from './searchAutocomplete.js';
-import {getAllShiurim, getShiurById, deleteShiur, addShiur} from '../services/shiurimService.js';
+import {getAllShiurim, getShiurById, deleteShiur, addShiur,updateShiur} from '../services/shiurimService.js';
 import {openShiurDialog} from '../admin/js/shiurDialog.js';
 
 let currentPage = 1;
@@ -32,21 +32,31 @@ const handleDelete = async (shiur, card) => {
 };
 
 
-const handleAdd = async () => {
+// Opens the shared dialog - the same for add and edit
+const openForm = async (options) => {
     const isAdmin = currentUser.role === 'admin';
     const rabbis = isAdmin ? await getAllRabbis() : [];
-
-    openShiurDialog({
-        title: 'הוספת שיעור',
-        submitLabel: 'הוסף',
-        rabbis,
-        isAdmin,
-        onSave: async (data) => {
-            await addShiur(data);
-            loadShiurim({}, true); // reload the list so the new shiur appears
-        }
-    });
+    openShiurDialog({ ...options, rabbis, isAdmin });
 };
+
+const handleAdd = () => openForm({
+    title: 'הוספת שיעור',
+    submitLabel: 'הוסף',
+    onSave: async (data) => {
+        await addShiur(data);
+        loadShiurim({}, true);
+    }
+});
+
+const handleEdit = (shiur, card) => openForm({
+    title: 'עריכת שיעור',
+    submitLabel: 'שמור',
+    shiur,
+    onSave: async (data) => {
+        const updated = await updateShiur(shiur._id, data);
+        card.replaceWith(createShiurCard(updated, cardOptions(updated)));
+    }
+});
 
 const initAddButton = () => {
     const addBtn = document.getElementById('add-shiur-btn');
@@ -59,8 +69,7 @@ const initAddButton = () => {
 };
 
 // What the card receives: a delete function only if the user may manage this shiur
-const cardOptions = (shiur) => (canManage(shiur) ? { onDelete: handleDelete } : {});
-
+const cardOptions = (shiur) => (canManage(shiur) ? { onEdit: handleEdit, onDelete: handleDelete } : {});
 
 const loadRabbisSection = async () => {
     const rabbis = await getAllRabbis();

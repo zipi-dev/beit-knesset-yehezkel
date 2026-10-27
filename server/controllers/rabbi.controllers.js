@@ -64,7 +64,7 @@ export const updateRabbi = async (req, res, next) => {
             RABBI_FIELDS.filter(f => req.body[f] !== undefined).map(f => [f, req.body[f]])
         );
         const updatedRabbi = await Rabbi.findByIdAndUpdate(id, update, {
-            new: true,
+            returnDocument: 'after',
             runValidators: true
         });
 

@@ -255,9 +255,9 @@ export const updateShiur = async (req, res, next) => {
         }
 
         const updatedShiur = await Shiur.findByIdAndUpdate(id, update, {
-            new: true,
+            returnDocument: 'after',
             runValidators: true
-        });
+        }).populate('rabbi');
         clearFeaturedCache();
         res.status(200).json(updatedShiur);
     } catch (err) {
