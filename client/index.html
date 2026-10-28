@@ -1,15 +1,45 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>בית הכנסת יחזקאל</title>
+    <title>בית כנסת יחזקאל</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/home.css">
-    <script type="module" src="js/heroSlider.js"></script>
-
+    <script type="module" src="js/home.js"></script>
 </head>
-<body dir="rtl">  
-    <section id="hero" class="hero"></section>
-</body>  
+<body>
+    <section class="hero">
+        <h1>בית כנסת יחזקאל</h1>
+        <p>תפילות במניין, שיעורי תורה ואווירה קהילתית חמה</p>
+        <div class="hero-actions">
+            <a class="btn" href="html/schedule.html">לוח תפילות</a>
+            <a class="btn btn-outline hero-btn-light" href="html/blessings.html">בקשת ברכה</a>
+        </div>
+        <div id="shabbat-strip" class="shabbat-strip hidden"></div>
+    </section>
+
+    <main>
+        <h2>מה תרצו לראות?</h2>
+        <div class="cards-grid">
+            <a class="card home-card" href="html/schedule.html"><h3>לוח תפילות</h3><p>זמני התפילות בשבת ובחול</p></a>
+            <a class="card home-card" href="html/schedule.html#zmanim"><h3>זמני השבת</h3><p>הדלקת נרות ויציאת שבת</p></a>
+            <a class="card home-card" href="html/events.html"><h3>אירועי הקהילה</h3><p>שמחות, אירועים ופעילויות</p></a>
+            <a class="card home-card" href="html/shiurim.html"><h3>שיעורי תורה</h3><p>שיעורים לפי רב ולפי נושא</p></a>
+            <a class="card home-card" href="html/opinions.html"><h3>חוות דעת</h3><p>מה אומרים על בית הכנסת</p></a>
+            <a class="card home-card" href="html/blessings.html"><h3>ברכות</h3><p>בקשת ברכה ותפילה מהרב</p></a>
+        </div>
+
+        <!-- מפת גוגל. כדי לשנות את המיקום: החליפי את הכתובת אחרי q= (או הדביקי כאן קוד "הטמעת מפה" מגוגל מפות) -->
+        <section class="map-section">
+            <h2>איך מגיעים?</h2>
+            <div class="map-wrapper">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3380.4764517266726!2d34.77262712490741!3d32.08340641911026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d4c79bff8436b%3A0x9e125ecd45361289!2z15HXmdeqINeb16DXodeqINeZ15fXlten15DXnA!5e0!3m2!1siw!2sus!4v1793211559427!5m2!1siw!2sus" width="600" height="450"
+ style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

@@ -8,10 +8,10 @@ import rabbiRoutes from './routes/rabbi.router.js';
 import blessRoutes from './routes/bless.router.js';
 import userRoutes from './routes/user.router.js';
 import { scheduleBlessingsEmail } from './services/blessingEmailService.js';
-//import eventRoutes from './routes/event.routes.js'; 
-//import opinionRoutes from './routes/opinion.routes.js';  
-//import scheduleRoutes from './routes/schedule.routes.js';
-//import zmanimRoutes from './routes/zmanim.routes.js'; // לפי שם הקובץ המדויק אצלך 
+import eventRoutes from './routes/event.routes.js'; 
+import opinionRoutes from './routes/opinion.routes.js';  
+import scheduleRoutes from './routes/schedule.routes.js';
+import zmanimRoutes from './routes/zmanim.routes.js'; // לפי שם הקובץ המדויק אצלך 
 const app = express();
 
 // Connect to the database
@@ -20,18 +20,12 @@ connectDB();
 // Schedule the blessings email task
 scheduleBlessingsEmail();
 
-//app.use(cors({ origin: 'http://127.0.0.1:5500' }));
-app.use(cors());
-
-
-app.use(express.json()); // can get body
-
-
+app.use(cors()); 
 app.use(express.json()); // מאפשר לקבל באדי - אוביקט
-//app.use('/api/event', eventRoutes);
-//app.use('/api/opinion', opinionRoutes); 
-//app.use('/api/schedule', scheduleRoutes);
-//app.use('/api/zmanim', zmanimRoutes);
+app.use('/api/event', eventRoutes);
+app.use('/api/opinion', opinionRoutes); 
+app.use('/api/schedule', scheduleRoutes);
+app.use('/api/zmanim', zmanimRoutes);
 app.get('/', (req, res) => {
   res.send('Server of sinagogue is running!');
 });

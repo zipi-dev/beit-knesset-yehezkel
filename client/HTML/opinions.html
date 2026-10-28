@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חוות דעת - בית הכנסת</title>
+    <!-- שימי לב לאותיות: שם התיקייה הוא CSS ולא css -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/opinions.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+    <main>
+        <h1>חוות דעת</h1>
+
+        <!-- טופס הוספת חוות דעת חדשה -->
+        <form id="opinion-form">
+            <h3>הוסיפו חוות דעת</h3>
+
+            <label for="userName">שם מלא:</label>
+            <input type="text" id="userName" maxlength="100" required>
+
+            <label for="comment">תוכן חוות הדעת:</label>
+            <textarea id="comment" maxlength="1000" required></textarea>
+
+            <button type="submit">שלח חוות דעת</button>
+        </form>
+
+        <hr>
+
+        <!-- ה-JS מזריק לכאן את הכרטיסים -->
+        <section id="opinions-container">
+            <p>טוען חוות דעת...</p>
+        </section>
+    </main>
+
+    <!-- type="module" חובה בגלל import/export. שימי לב: התיקייה JS באותיות גדולות -->
+    <script type="module" src="../js/opinionMenu.js"></script>
+</body>
+</html>

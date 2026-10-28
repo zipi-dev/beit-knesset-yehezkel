@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוח ניהול | בית הכנסת יחזקאל</title>
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+    <script type="module" src="../js/adminGuard.js"></script>
+</head>
+
+<!-- כל מי שמחובר רשאי להיכנס ללוח הניהול. data-for-roles קובע מי רואה כל קישור -->
+<body class="admin-page" dir="rtl" data-roles="admin,rabbi,gabbai">
+    <header>
+        <h1>לוח ניהול</h1>
+        <p id="admin-greeting"></p>
+        <a href="../../index.html">לאתר</a>
+        <button id="logout-btn" type="button">התנתק</button>
+    </header>
+    <main>
+        <nav>
+            <ul class="dash-grid">
+                <li data-for-roles="admin,rabbi"><a class="dash-card" href="./shiurimAdmin.html"><strong>ניהול שיעורים</strong><span>הוספה ועריכה של שיעורי תורה</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./eventsAdmin.html"><strong>ניהול אירועים</strong><span>אירועים, תמונות ותאריכים</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./scheduleAdmin.html"><strong>ניהול לוח תפילות</strong><span>זמני התפילות שמוצגים באתר</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./opinionsAdmin.html"><strong>ניהול חוות דעת</strong><span>מחיקת חוות דעת לא הולמות</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./blessingAdmin.html"><strong>ניהול ברכות</strong><span>בקשות הברכה שהתקבלו</span></a></li>
+            </ul>
+        </nav>
+        <p id="dash-empty" class="hidden">אין כרגע פעולות ניהול זמינות לתפקיד שלך.</p>
+    </main>
+</body>
+</html>

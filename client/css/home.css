@@ -1,32 +1,58 @@
-body {
-    margin: 0; /* so the hero touches the edges of the screen */
-}
-
-/* The area fills the whole screen: width and height, on any device */
+/* =====================================================
+   home.css - דף הבית (index.html). נשען על המשתנים של base.css
+   ===================================================== */
 .hero {
-    --header-height: 0px; /* when the header is added, put its real height here */
-    position: relative;
-    width: 100%;
-    height: calc(100vh - var(--header-height));  /* for older browsers */
-    height: calc(100svh - var(--header-height)); /* phones: not affected by the browser's address bar */
-    min-height: 280px;
-    overflow: hidden;
+    padding: 84px 20px 76px;
+    text-align: center;
+    color: var(--gold-900);
+    background: var(--pattern-star), var(--gold-gradient);
+    border-bottom: 4px solid var(--gold-700);
 }
-
-/* Every image lies on top of the others, and only the "active" one is visible */
-.hero-slide {
-    position: absolute;
-    inset: 0;
+.hero h1 { font-size: 3.2rem; font-weight: 900; color: #3a2a12; }
+.hero h1::after {
+    content: '\25C6';
     display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;               /* fills the area without stretching the image */
-    object-position: center center;  /* which part of the image stays visible */
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
+    width: 170px;
+    margin: 12px auto 0;
+    font-size: 0.7rem;
+    line-height: 1;
+    color: var(--turq-700);
+    background:
+        linear-gradient(90deg, transparent, var(--cream-50)) 0 50% / 70px 2px no-repeat,
+        linear-gradient(270deg, transparent, var(--cream-50)) 100% 50% / 70px 2px no-repeat;
+}
+.hero p { max-width: 580px; margin: 16px auto 0; font-size: 1.25rem; font-weight: 500; color: var(--gold-900); }
+.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 32px; }
+
+/* על רקע זהב: כפתור ראשי כהה, כפתור משני עם מסגרת כהה */
+.hero .btn { color: var(--gold-200); background: #33261a; border-color: #33261a; }
+.hero .btn:hover { color: var(--gold-100); background: #4a3510; }
+.hero .btn.btn-outline { color: #33261a; background: transparent; border: 2px solid #33261a; }
+.hero .btn.btn-outline:hover { color: var(--gold-100); background: #33261a; }
+
+/* כרטיסי הדף - 3 בשורה, והשורה האחרונה ממורכזת */
+.home-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
+.home-grid > .home-card { flex: 1 1 300px; max-width: 364px; }
+
+/* כרטיסי הדף - קישורים שנראים כמו כרטיסים */
+.home-card { display: block; text-decoration: none; color: var(--ink); }
+.home-card h3 { margin-bottom: 6px; font-size: 1.35rem; color: var(--gold-800); }
+.home-card p { color: var(--ink-soft); }
+.home-card:hover h3 { color: var(--turq-700); }
+
+@media (max-width: 600px) {
+    .hero { padding: 56px 16px 52px; }
+    .hero h1 { font-size: 2.2rem; }
 }
 
-.hero-slide.active {
-    opacity: 1;
+/* מפת גוגל בדף הבית */
+.map-section { margin-top: 48px; }
+.map-section h2 { margin-bottom: 16px; }
+.map-wrapper {
+    overflow: hidden;
+    border: 2px solid var(--gold-300);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
-
+.map-wrapper iframe { display: block; width: 100%; height: 400px; border: 0; }
+@media (max-width: 600px) { .map-wrapper iframe { height: 300px; } }

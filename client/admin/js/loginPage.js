@@ -16,7 +16,7 @@ form.addEventListener('submit', async (e) => {
 
     try {
         await login(username, password);
-        window.location.href = './shiurimAdmin.html'; // the admin page, built in the next steps
+window.location.href = './dashboard.html';
     } catch (error) {
         showError(error.message);
     }

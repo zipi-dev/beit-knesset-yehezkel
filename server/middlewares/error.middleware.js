@@ -13,7 +13,10 @@ export const errorHandler = (err, req, res, next) => {
 
     // בדיקה האם השגיאה היא אובייקט עטוף או שגיאת JavaScript רגילה
     const errorObj = err.error || err;
-    const message = errorObj.message || 'Internal Server Error';
+    const message =
+    status === 500 && process.env.NODE_ENV !== 'development'
+        ? 'Internal Server Error'
+        : errorObj.message || 'Internal Server Error';
     
     // הצגת ה-stack trace רק בסביבת פיתוח מטעמי אבטחה
     const stack = process.env.NODE_ENV === 'development' ? errorObj.stack : undefined;

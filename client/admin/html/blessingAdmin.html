@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול ברכות | בית הכנסת יחזקאל</title>
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+    <script type="module" src="../js/adminGuard.js"></script>
+    <script type="module" src="../js/blessingsAdmin.js"></script>
+</head>
+
+<body class="admin-page" dir="rtl" data-roles="admin">
+    <header>
+        <h1>ניהול ברכות</h1>
+        <p id="admin-greeting"></p>
+        <a href="./dashboard.html">חזרה ללוח הניהול</a>
+        <button id="logout-btn" type="button">התנתק</button>
+    </header>
+    <main>
+        <p style="margin-bottom: 20px;">בקשות הברכה נשלחות לרב במייל אוטומטי. כאן אפשר למחוק בקשה שגויה או לא הולמת.</p>
+        <ul id="blessings-list"></ul>
+    </main>
+</body>
+</html>

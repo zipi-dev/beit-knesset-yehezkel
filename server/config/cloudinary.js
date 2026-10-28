@@ -1,0 +1,12 @@
+// חיבור לחשבון ה-Cloudinary. הפרטים נלקחים מקובץ ה-.env (לא כותבים אותם כאן!)
+import { v2 as cloudinary } from 'cloudinary';
+import { env } from './env.js';
+
+cloudinary.config({
+    cloud_name: env.CLOUDINARY_CLOUD_NAME,
+    api_key: env.CLOUDINARY_API_KEY,
+    api_secret: env.CLOUDINARY_API_SECRET,
+    secure: true // תמיד כתובות https
+});
+
+export default cloudinary;
