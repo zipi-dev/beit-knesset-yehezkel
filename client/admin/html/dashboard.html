@@ -4,28 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>לוח ניהול | בית הכנסת יחזקאל</title>
-    <link rel="stylesheet" href="../../css/shiurim.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/admin.css">
     <script type="module" src="../js/adminGuard.js"></script>
-
 </head>
 
-<body dir="rtl" data-roles="admin">
+<!-- כל מי שמחובר רשאי להיכנס ללוח הניהול. data-for-roles קובע מי רואה כל קישור -->
+<body class="admin-page" dir="rtl" data-roles="admin,rabbi,gabbai">
     <header>
         <h1>לוח ניהול</h1>
         <p id="admin-greeting"></p>
-        <a href="./dashboard.html">חזרה ללוח הניהול</a>
+        <a href="../../index.html">לאתר</a>
         <button id="logout-btn" type="button">התנתק</button>
     </header>
     <main>
         <nav>
-            <ul>
-                <li><a href="./shiurimAdmin.html">ניהול שיעורים</a></li>
-                <li><a href="./eventsAdmin.html">ניהול אירועים</a></li>
-                <li><a href="./scheduleAdmin.html">ניהול לוח זמנים</a></li>
-                <li><a href="./opinionsAdmin.html">ניהול חוות דעת</a></li>
-                <li><a href="./blessingAdmin.html">ניהול ברכות</a></li>
+            <ul class="dash-grid">
+                <li data-for-roles="admin,rabbi"><a class="dash-card" href="./shiurimAdmin.html"><strong>ניהול שיעורים</strong><span>הוספה ועריכה של שיעורי תורה</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./eventsAdmin.html"><strong>ניהול אירועים</strong><span>אירועים, תמונות ותאריכים</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./scheduleAdmin.html"><strong>ניהול לוח תפילות</strong><span>זמני התפילות שמוצגים באתר</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./opinionsAdmin.html"><strong>ניהול חוות דעת</strong><span>מחיקת חוות דעת לא הולמות</span></a></li>
+                <li data-for-roles="admin"><a class="dash-card" href="./blessingAdmin.html"><strong>ניהול ברכות</strong><span>בקשות הברכה שהתקבלו</span></a></li>
             </ul>
         </nav>
+        <p id="dash-empty" class="hidden">אין כרגע פעולות ניהול זמינות לתפקיד שלך.</p>
     </main>
 </body>
 </html>

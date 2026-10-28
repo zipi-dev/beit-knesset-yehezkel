@@ -6,7 +6,7 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 26px;
 }
-#events-container > p { grid-column: 1 / -1; text-align: center; color: var(--muted); }
+#events-container > p { grid-column: 1 / -1; text-align: center; color: var(--ink-soft); }
 
 .event-card {
     display: flex;
@@ -20,11 +20,11 @@
 }
 .event-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
 
-.event-image-link { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--turq-100); }
+.event-image-link { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--gold-100); }
 .event-image { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
 .event-card:hover .event-image { transform: scale(1.05); }
 
-/* כפתור "נגן" קטן על התמונה */
+/* כפתור "נגן" קטן על התמונה (רק לסרטוני יוטיוב) */
 .event-image-link::after {
     content: "\25B6";
     position: absolute;
@@ -36,8 +36,9 @@
     height: 54px;
     padding-left: 4px;
     font-size: 18px;
-    color: #fff;
-    background: rgba(6, 65, 74, 0.65);
+    color: var(--gold-200);
+    background: rgba(51, 38, 26, 0.72);
+    border: 2px solid var(--gold-400);
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
@@ -45,21 +46,24 @@
 /* תמונה שהועלתה - בלי כפתור הנגן */
 .event-image-link--photo::after { display: none; }
 
-.event-info { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 20px 22px 22px; border-top: 4px solid var(--turq-500); }
-.event-image-link + .event-info { border-top: none; }
-.event-title { font-size: 1.35rem; color: var(--turq-700); }
+.event-info { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 20px 22px 22px; border-top: 4px solid var(--gold-500); }
+.event-image-link + .event-info { border-top: 3px solid var(--gold-500); }
+.event-title { font-size: 1.4rem; font-weight: 700; color: var(--gold-800); }
+
+/* תגית התאריך - נגיעת טורקיז */
 .event-date {
     align-self: flex-start;
-    padding: 3px 12px;
+    padding: 3px 14px;
     font-size: 0.88rem;
     font-weight: 700;
     color: var(--turq-900);
     background: var(--turq-100);
+    border: 1px solid var(--turq-300);
     border-radius: 999px;
 }
-.event-desc { color: var(--text); }
-.event-photographer { font-size: 0.85rem; color: var(--muted); }
-.event-media-link { margin-top: auto; align-self: flex-start; font-weight: 700; text-decoration: none; color: var(--turq-700); }
-.event-media-link:hover { color: var(--accent-dark); text-decoration: underline; }
+.event-desc { color: var(--ink); }
+.event-photographer { font-size: 0.85rem; color: var(--ink-soft); }
+.event-media-link { margin-top: auto; align-self: flex-start; font-weight: 700; text-decoration: none; color: var(--gold-700); }
+.event-media-link:hover { color: var(--turq-700); text-decoration: underline; }
 
 @media (max-width: 600px) { #events-container { grid-template-columns: 1fr; } }

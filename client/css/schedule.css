@@ -1,7 +1,7 @@
 /* =====================================================
-   schedule.css - לוח תפילות וזמני השבת (schedule.html)
+   schedule.css - לוח התפילות (schedule.html)
    ===================================================== */
-.schedule-section, .zmanim-section { margin-bottom: 8px; }
+.schedule-section { margin-bottom: 8px; }
 
 /* ---------- כרטיס לוח תפילות ---------- */
 .schedule-card {
@@ -9,7 +9,7 @@
     overflow: hidden;
     max-width: 720px;
     margin: 0 auto;
-    padding: 28px 28px 22px;
+    padding: 30px 28px 22px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -20,52 +20,26 @@
     position: absolute;
     inset: 0 0 auto 0;
     height: 6px;
-    background: linear-gradient(90deg, var(--turq-700), var(--turq-400), var(--accent));
+    background: linear-gradient(90deg, var(--gold-600), var(--gold-300), var(--turq-500));
 }
-.schedule-title { margin-bottom: 4px; font-size: 1.7rem; text-align: center; color: var(--turq-700); }
-.schedule-date { margin-bottom: 18px; text-align: center; font-size: 0.95rem; color: var(--muted); }
+.schedule-title { margin-bottom: 4px; font-size: 1.8rem; text-align: center; color: var(--gold-800); }
+.schedule-date { margin-bottom: 18px; text-align: center; font-size: 0.95rem; color: var(--ink-soft); }
 
+.prayers-container h4 { margin-bottom: 6px; font-size: 1rem; font-weight: 700; color: var(--gold-700); letter-spacing: 0.3px; }
 .prayers-list { list-style: none; }
 .prayer-item {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 14px;
-    padding: 14px 6px;
-    border-bottom: 1px dashed var(--border);
+    padding: 14px 8px;
+    border-bottom: 1px dashed var(--gold-300);
     transition: background 0.2s;
 }
 .prayer-item:last-child { border-bottom: none; }
-.prayer-item:hover { background: var(--turq-50); }
-.prayer-text { font-size: 1.1rem; font-weight: 700; color: var(--text); }
-.prayer-notes { font-size: 0.9rem; color: var(--muted); }
-.no-prayers { padding: 24px; text-align: center; color: var(--muted); }
+.prayer-item:hover { background: var(--gold-50); }
+.prayer-text { font-size: 1.1rem; font-weight: 700; color: var(--ink); }
+.prayer-notes { font-size: 0.9rem; color: var(--ink-soft); }
+.no-prayers { padding: 24px; text-align: center; color: var(--ink-soft); }
 
-/* ---------- כרטיסי זמני שבת ---------- */
-.zmanim-card {
-    position: relative;
-    overflow: hidden;
-    padding: 24px;
-    background: linear-gradient(180deg, var(--turq-50), var(--surface) 55%);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    transition: transform 0.25s, box-shadow 0.25s;
-}
-.zmanim-card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 5px; background: var(--turq-500); }
-.zmanim-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-
-.zmanim-city-title {
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    font-size: 1.45rem;
-    color: var(--turq-700);
-    border-bottom: 2px solid var(--turq-100);
-}
-.zmanim-list { list-style: none; }
-.zmanim-item { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px dashed var(--border); }
-.zmanim-item:last-child { border-bottom: none; }
-.zmanim-label { color: var(--muted); font-weight: 500; }
-.zmanim-time { font-weight: 700; color: var(--turq-700); font-variant-numeric: tabular-nums; }
-
-@media (max-width: 600px) { .schedule-card { padding: 22px 16px 16px; } .prayer-item { flex-direction: column; gap: 2px; } }
+@media (max-width: 600px) { .schedule-card { padding: 24px 16px 16px; } .prayer-item { flex-direction: column; gap: 2px; } }

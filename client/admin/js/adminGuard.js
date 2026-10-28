@@ -33,6 +33,14 @@ if (!user || !localStorage.getItem('token')) {
         document.getElementById('admin-greeting').textContent = text;
     });
 
+    // בלוח הניהול: מסתירים קישורים שהתפקיד הזה לא מורשה להשתמש בהם (<li data-for-roles="admin,rabbi">)
+    document.querySelectorAll('[data-for-roles]').forEach(el => {
+        const roles = el.dataset.forRoles.split(',').map(r => r.trim());
+        if (!roles.includes(user.role)) el.classList.add('hidden');
+    });
+    const emptyNote = document.getElementById('dash-empty');
+    if (emptyNote && !document.querySelector('[data-for-roles]:not(.hidden)')) emptyNote.classList.remove('hidden');
+
     document.getElementById('logout-btn').addEventListener('click', () => {
         logout();
         window.location.href = './login.html';

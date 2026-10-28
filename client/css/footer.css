@@ -1,19 +1,21 @@
 /* =====================================================
    footer.css - תחתית האתר (נוצרת ב-js/footer.js)
+   פס זהב בראש, ואחריו חום עמוק עם כותרות זהב.
    ===================================================== */
-.site-footer { margin-top: auto; color: #fff; background: var(--turq-900); }
+.site-footer { margin-top: auto; color: #f1e7d0; background: #2c2014; }
 
-/* פס הזמנה בראש התחתית */
+/* פס ההזמנה בראש התחתית */
 .footer-cta {
-    padding: 40px 20px;
+    padding: 42px 20px;
     text-align: center;
-    color: #fff;
-    background: linear-gradient(135deg, var(--turq-600), var(--turq-400));
+    color: #3a2a12;
+    background: var(--pattern-star), var(--gold-gradient);
+    border-top: 4px solid var(--gold-700);
 }
-.footer-cta h2 { margin-bottom: 8px; font-size: 1.8rem; color: #fff; }
-.footer-cta p { font-size: 1.1rem; opacity: 0.95; }
+.footer-cta h2 { margin-bottom: 8px; font-size: 1.9rem; font-weight: 900; color: #3a2a12; }
+.footer-cta p { font-size: 1.1rem; font-weight: 500; color: var(--gold-900); }
 
-.footer-main { padding: 48px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+.footer-main { padding: 48px 20px; border-bottom: 1px solid rgba(227, 197, 119, 0.18); }
 .footer-nav-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -27,24 +29,24 @@
     margin-bottom: 18px;
     padding-bottom: 8px;
     font-size: 1.2rem;
-    color: var(--turq-200);
+    color: var(--gold-300);
 }
 .footer-col h3::after {
     content: '';
     position: absolute;
     right: 0;
     bottom: 0;
-    width: 40px;
+    width: 44px;
     height: 3px;
-    background: var(--accent);
+    background: linear-gradient(90deg, var(--gold-400), var(--turq-500));
     border-radius: 2px;
 }
 .footer-col ul { list-style: none; }
-.footer-col li { margin-bottom: 10px; color: #cfeff1; }
-.footer-col a { color: #cfeff1; text-decoration: none; transition: color 0.2s, padding 0.2s; }
-.footer-col a:hover { color: var(--accent); padding-right: 4px; }
+.footer-col li { margin-bottom: 10px; color: #e6d9bb; }
+.footer-col a { color: #e6d9bb; text-decoration: none; transition: color 0.2s, padding 0.2s; }
+.footer-col a:hover { color: var(--gold-300); padding-right: 4px; }
 
-.footer-bottom { padding: 18px 0; background: #042f36; }
+.footer-bottom { padding: 18px 0; background: #1f160c; }
 .footer-bottom-container {
     display: flex;
     align-items: center;
@@ -55,6 +57,6 @@
     margin: 0 auto;
     padding: 0 20px;
 }
-.copyright { font-size: 0.9rem; color: #8fb8bc; }
-.admin-lock-btn { display: flex; align-items: center; gap: 4px; font-size: 0.9rem; color: #8fb8bc; text-decoration: none; transition: color 0.2s; }
-.admin-lock-btn:hover { color: var(--accent); }
+.copyright { font-size: 0.9rem; color: #bfae8c; }
+.admin-lock-btn { display: flex; align-items: center; gap: 4px; font-size: 0.9rem; color: #bfae8c; text-decoration: none; transition: color 0.2s; }
+.admin-lock-btn:hover { color: var(--gold-300); }

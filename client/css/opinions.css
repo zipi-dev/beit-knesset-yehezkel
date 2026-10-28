@@ -6,7 +6,7 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 22px;
 }
-#opinions-container > p { grid-column: 1 / -1; text-align: center; color: var(--muted); }
+#opinions-container > p { grid-column: 1 / -1; text-align: center; color: var(--ink-soft); }
 
 .opinion-card {
     position: relative;
@@ -16,7 +16,7 @@
     padding: 22px 22px 18px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-right: 5px solid var(--turq-500);
+    border-right: 5px solid var(--gold-500);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     transition: transform 0.25s, box-shadow 0.25s;
@@ -31,23 +31,23 @@
     font-family: var(--font-title);
     font-size: 4.5rem;
     line-height: 1;
-    color: var(--turq-100);
+    color: var(--gold-200);
     pointer-events: none;
 }
 
-.opinion-author { font-size: 1.15rem; color: var(--turq-700); }
+.opinion-author { font-size: 1.15rem; color: var(--gold-800); }
 .opinion-comment { flex: 1; white-space: pre-wrap; overflow-wrap: anywhere; }
-.opinion-date { font-size: 0.85rem; color: var(--muted); }
+.opinion-date { font-size: 0.85rem; color: var(--ink-soft); }
 
 .like-btn {
     align-self: flex-start;
     min-height: 38px;
     padding: 6px 18px;
-    color: var(--turq-700);
-    background: var(--turq-50);
-    border: 1.5px solid var(--turq-200);
+    color: var(--gold-800);
+    background: var(--gold-50);
+    border: 1.5px solid var(--gold-300);
     box-shadow: none;
 }
-.like-btn:hover { color: #fff; background: var(--turq-600); border-color: var(--turq-600); }
-/* אחרי שהמבקר כבר נתן לייק */
-.like-btn.liked, .like-btn.liked:disabled { opacity: 1; color: var(--turq-900); background: var(--accent); border-color: var(--accent); cursor: default; }
+.like-btn:hover { color: var(--ink); background: var(--gold-200); border-color: var(--gold-400); }
+/* אחרי שהמבקר כבר נתן לייק - נגיעת טורקיז */
+.like-btn.liked, .like-btn.liked:disabled { opacity: 1; color: #fff; background: var(--turq-700); border-color: var(--turq-700); cursor: default; }

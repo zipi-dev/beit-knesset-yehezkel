@@ -1,39 +1,58 @@
 /* =====================================================
-   base.css - הבסיס המשותף לכל האתר
-   כאן נמצאים הצבעים, הגופנים, האיפוס, כפתורים וטפסים.
+   base.css - הבסיס המשותף לכל האתר (ציבורי + מנהל)
+   פלטה: זהב ושמנת, עם נגיעות קטנות של טורקיז.
    כל קובץ עיצוב אחר בנוי על המשתנים שמוגדרים כאן.
+   כדי לשנות את גוון הזהב של כל האתר - משנים רק כאן.
    ===================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700&display=swap');
 
 :root {
-    /* פלטת הטורקיז (מהבהיר לכהה) */
-    --turq-50:  #effafa;
-    --turq-100: #d5f3f4;
-    --turq-200: #a9e6e9;
-    --turq-400: #2fbcc6;
-    --turq-500: #12a4b0;
-    --turq-600: #0c8590;
-    --turq-700: #0a6b75;
-    --turq-900: #06414a;
+    /* זהב (מהבהיר לכהה). --gold-500 זהה לזהב של דף השיעורים */
+    --gold-50:  #fdf9ee;
+    --gold-100: #f8efd3;
+    --gold-200: #efdca4;
+    --gold-300: #e3c577;
+    --gold-400: #d4ae55;
+    --gold-500: #c49a3c;
+    --gold-600: #a67f27;
+    --gold-700: #8a6620;
+    --gold-800: #6b4f17;
+    --gold-900: #4a3510;
 
-    /* צבע הדגשה חם שמתאים לטורקיז */
-    --accent: #e8b44c;
-    --accent-dark: #b8862a;
+    /* שמנת */
+    --cream-50:  #fffdf8;
+    --cream-100: #faf6ee;
+    --cream-200: #f3e9d2;
 
-    --bg: #f3fbfb;
+    /* טורקיז - נגיעות בלבד (תגיות תאריך, מוקד, קישוטים) */
+    --turq-100: #d9f1f1;
+    --turq-300: #7fcfd3;
+    --turq-500: #1b9aa6;
+    --turq-700: #0c6f79;
+    --turq-900: #0a4e56;
+
+    /* טקסט */
+    --ink: #33261a;
+    --ink-soft: #6f5d4a;
+
+    --bg: var(--cream-100);
     --surface: #ffffff;
-    --text: #12343a;
-    --muted: #52777c;
-    --border: #cfe9eb;
-    --danger: #c0392b;
+    --border: #eadfc4;
+    --danger: #a93226;
+
+    --gold-gradient: linear-gradient(135deg, #b8892c 0%, #d4ae55 48%, #e8cf8a 100%);
+    --gold-gradient-soft: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+
+    /* דוגמת מגן דוד עדינה מאוד לרקע הבאנרים */
+    --pattern-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%234a3510' stroke-opacity='.09' stroke-width='1.2'%3E%3Cpath d='M32 14l15.6 27H16.4z'/%3E%3Cpath d='M32 50L16.4 23h31.2z'/%3E%3C/g%3E%3C/svg%3E");
 
     --radius: 14px;
     --radius-sm: 8px;
-    --shadow: 0 4px 16px rgba(8, 76, 85, 0.08);
-    --shadow-hover: 0 10px 28px rgba(8, 76, 85, 0.16);
+    --shadow: 0 4px 16px rgba(107, 79, 23, 0.10);
+    --shadow-hover: 0 12px 30px rgba(107, 79, 23, 0.20);
     --maxw: 1180px;
 
-    --font-title: "Frank Ruhl Libre", Georgia, serif;
+    --font-title: "Frank Ruhl Libre", "David Libre", "David", Georgia, serif;
     --font-body: "Heebo", "Segoe UI", Arial, sans-serif;
 }
 
@@ -47,7 +66,7 @@ body {
     direction: rtl;
     font-family: var(--font-body);
     line-height: 1.6;
-    color: var(--text);
+    color: var(--ink);
     background: var(--bg);
 }
 
@@ -60,7 +79,8 @@ main {
 }
 
 img { max-width: 100%; }
-a { color: var(--turq-700); }
+a { color: var(--gold-700); }
+a:hover { color: var(--turq-700); }
 .hidden { display: none !important; }
 
 /* ---------- כותרות ---------- */
@@ -68,18 +88,24 @@ h1, h2, h3 { font-family: var(--font-title); line-height: 1.3; }
 
 main h2 {
     margin-bottom: 24px;
-    font-size: 1.8rem;
+    font-size: 1.9rem;
+    font-weight: 700;
     text-align: center;
-    color: var(--turq-700);
+    color: var(--gold-800);
 }
-main h2::after {
-    content: '';
+/* קו זהב עם יהלום טורקיז באמצע */
+main h2::after, .page-header h1::after {
+    content: '\25C6';
     display: block;
-    width: 56px;
-    height: 3px;
+    width: 150px;
     margin: 10px auto 0;
-    background: var(--accent);
-    border-radius: 2px;
+    font-size: 0.6rem;
+    line-height: 1;
+    text-align: center;
+    color: var(--turq-500);
+    background:
+        linear-gradient(90deg, transparent, var(--gold-400)) 0 50% / 62px 2px no-repeat,
+        linear-gradient(270deg, transparent, var(--gold-400)) 100% 50% / 62px 2px no-repeat;
 }
 
 /* ---------- באנר עליון לכל דף ---------- */
@@ -88,24 +114,18 @@ main h2::after {
     overflow: hidden;
     padding: 56px 20px 60px;
     text-align: center;
-    color: #fff;
-    background:
-        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.14) 0 90px, transparent 91px),
-        radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.10) 0 130px, transparent 131px),
-        linear-gradient(135deg, var(--turq-700), var(--turq-500));
-    border-bottom: 4px solid var(--accent);
+    color: var(--gold-900);
+    background: var(--pattern-star), var(--gold-gradient);
+    border-bottom: 4px solid var(--gold-700);
 }
-.page-header h1 { font-size: 2.4rem; font-weight: 700; }
+.page-header h1 { font-size: 2.5rem; font-weight: 900; color: #3a2a12; }
 .page-header h1::after {
-    content: '';
-    display: block;
-    width: 80px;
-    height: 3px;
-    margin: 14px auto 0;
-    background: var(--accent);
-    border-radius: 2px;
+    color: var(--turq-700);
+    background:
+        linear-gradient(90deg, transparent, var(--cream-50)) 0 50% / 62px 2px no-repeat,
+        linear-gradient(270deg, transparent, var(--cream-50)) 100% 50% / 62px 2px no-repeat;
 }
-.page-header p { margin-top: 14px; font-size: 1.1rem; opacity: 0.92; }
+.page-header p { margin-top: 14px; font-size: 1.15rem; font-weight: 500; color: var(--gold-900); }
 
 /* ---------- כפתורים ---------- */
 button, .btn {
@@ -114,22 +134,27 @@ button, .btn {
     justify-content: center;
     gap: 8px;
     min-height: 44px;
-    padding: 10px 24px;
+    padding: 10px 26px;
     font: inherit;
     font-weight: 700;
-    color: #fff;
+    color: var(--ink);
     text-decoration: none;
-    background: var(--turq-700);
-    border: none;
+    background: linear-gradient(180deg, var(--gold-400), var(--gold-500));
+    border: 1px solid var(--gold-600);
     border-radius: 999px;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
 }
-button:hover, .btn:hover { background: var(--turq-900); box-shadow: var(--shadow); }
+button:hover, .btn:hover {
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--gold-300), var(--gold-400));
+    box-shadow: var(--shadow);
+}
 button:active, .btn:active { transform: translateY(1px); }
 button:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
-.btn-outline { color: var(--turq-700); background: transparent; border: 2px solid var(--turq-600); }
-.btn-outline:hover { color: #fff; background: var(--turq-700); }
+
+.btn-outline { color: var(--gold-800); background: transparent; border: 2px solid var(--gold-500); }
+.btn-outline:hover { color: var(--ink); background: var(--gold-200); }
 
 /* ---------- טפסים ---------- */
 .form-card {
@@ -138,11 +163,11 @@ button:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
     padding: 28px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-top: 5px solid var(--turq-500);
+    border-top: 5px solid var(--gold-500);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
 }
-.form-card h2, .form-card h3 { margin-bottom: 18px; font-size: 1.4rem; color: var(--turq-700); }
+.form-card h2, .form-card h3 { margin-bottom: 18px; font-size: 1.4rem; color: var(--gold-800); }
 .form-card h2::after { display: none; }
 .form-card form, form.form-card { display: flex; flex-direction: column; gap: 16px; }
 
@@ -153,9 +178,9 @@ input, select, textarea {
     padding: 11px 14px;
     font: inherit;
     font-size: 16px; /* 16px מונע זום אוטומטי באייפון */
-    color: var(--text);
+    color: var(--ink);
     background: #fff;
-    border: 1.5px solid var(--border);
+    border: 1.5px solid var(--gold-200);
     border-radius: var(--radius-sm);
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -163,11 +188,11 @@ input, select, textarea {
 textarea { min-height: 110px; resize: vertical; }
 input:focus, select:focus, textarea:focus {
     border-color: var(--turq-500);
-    box-shadow: 0 0 0 4px rgba(18, 164, 176, 0.18);
+    box-shadow: 0 0 0 4px rgba(27, 154, 166, 0.18);
 }
 
 /* ---------- כרטיס כללי + גריד ---------- */
-.cards-grid, .zmanim-grid {
+.cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
@@ -187,14 +212,14 @@ input:focus, select:focus, textarea:focus {
     position: absolute;
     inset: 0 0 auto 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--turq-500), var(--turq-200));
+    background: var(--gold-gradient-soft);
 }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
 
-hr { margin: 44px 0; border: none; border-top: 2px dashed var(--border); }
+hr { margin: 44px 0; border: none; border-top: 2px dashed var(--gold-200); }
 .error-message { padding: 20px; text-align: center; font-weight: 700; color: var(--danger); }
 
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--turq-500); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 @media (max-width: 600px) {

@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ניהול אירועים | בית הכנסת יחזקאל</title>
-    <link rel="stylesheet" href="../../css/shiurim.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/admin.css">
     <script type="module" src="../js/adminGuard.js"></script>
     <script type="module" src="../js/eventsAdmin.js"></script>
 </head>
 
-<body dir="rtl" data-roles="admin">
+<body class="admin-page" dir="rtl" data-roles="admin">
     <header>
         <h1>ניהול אירועים</h1>
         <p id="admin-greeting"></p>
@@ -30,10 +31,10 @@
             <input type="url" id="mediaUrl">
             <label for="image">תמונה (לא חובה - JPG / PNG / WEBP, עד 5MB)</label>
             <input type="file" id="image" accept="image/jpeg,image/png,image/webp,image/gif">
-            <img id="image-preview" class="hidden" alt="תצוגה מקדימה" style="max-width: 220px; border-radius: 8px;">
-            <button type="button" id="remove-image-btn" class="hidden">הסר תמונה</button>
+            <img id="image-preview" class="hidden image-preview" alt="תצוגה מקדימה">
+            <button type="button" id="remove-image-btn" class="hidden secondary">הסר תמונה</button>
             <button type="submit" id="submit-btn">הוסף אירוע</button>
-            <button type="button" id="cancel-btn" class="hidden">ביטול עריכה</button>
+            <button type="button" id="cancel-btn" class="hidden secondary">ביטול עריכה</button>
         </form>
         <ul id="events-list"></ul>
     </main>

@@ -1,0 +1,158 @@
+/* =====================================================
+   admin.css - עיצוב כל דפי המנהל (נשען על base.css)
+   אותה פלטה כמו האתר: זהב ושמנת, נגיעות טורקיז.
+   ===================================================== */
+
+/* ---------- כותרת הדף ---------- */
+.admin-page header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    padding: 18px 24px;
+    background: var(--pattern-star), var(--gold-gradient);
+    border-bottom: 4px solid var(--gold-700);
+}
+.admin-page header h1 { flex: 1 1 220px; font-size: 1.8rem; font-weight: 900; color: #3a2a12; }
+.admin-page #admin-greeting { font-weight: 700; color: var(--gold-900); }
+.admin-page #admin-greeting:empty { display: none; }
+
+.admin-page header a {
+    padding: 8px 18px;
+    font-weight: 700;
+    color: #33261a;
+    text-decoration: none;
+    border: 2px solid #33261a;
+    border-radius: 999px;
+    transition: background 0.2s, color 0.2s;
+}
+.admin-page header a:hover { color: var(--gold-100); background: #33261a; }
+.admin-page header button { min-height: 40px; color: var(--gold-200); background: #33261a; border-color: #33261a; }
+.admin-page header button:hover { color: var(--gold-100); background: #4a3510; }
+
+.admin-page main { max-width: 920px; }
+
+/* ---------- טפסים ---------- */
+.admin-page main > form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 34px;
+    padding: 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 5px solid var(--gold-500);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.admin-page main > form label { margin: 10px 0 0; font-weight: 700; color: var(--gold-900); }
+.admin-page main > form button { align-self: flex-start; margin-top: 16px; }
+.admin-page main > form button + button { margin-top: 6px; }
+.image-preview { max-width: 240px; margin-top: 8px; border: 2px solid var(--gold-300); border-radius: var(--radius-sm); }
+input[type="file"] { padding: 9px 12px; background: var(--gold-50); border-style: dashed; }
+
+/* כפתור משני וכפתור מחיקה */
+button.secondary { color: var(--gold-800); background: transparent; border: 2px solid var(--gold-500); }
+button.secondary:hover { color: var(--ink); background: var(--gold-200); }
+button.danger { color: var(--danger); background: transparent; border: 1.5px solid var(--danger); }
+button.danger:hover { color: #fff; background: var(--danger); }
+
+/* ---------- רשימות (אירועים, חוות דעת, ברכות) ---------- */
+#events-list, #opinions-list, #blessings-list { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+#events-list > li, #opinions-list > li, #blessings-list > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 14px 18px;
+    overflow-wrap: anywhere;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--gold-500);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+}
+#events-list > li strong, #opinions-list > li strong, #blessings-list > li strong { font-size: 1.05rem; color: var(--gold-800); }
+/* הכפתורים נדחפים לקצה */
+#events-list > li > button:first-of-type,
+#opinions-list > li > button:first-of-type,
+#blessings-list > li > button:first-of-type { margin-inline-start: auto; }
+.admin-page li button, .admin-page section button { min-height: 36px; padding: 5px 18px; font-size: 0.92rem; }
+
+/* ---------- לוחות תפילות (scheduleAdmin) ---------- */
+#schedules-list { display: flex; flex-direction: column; gap: 22px; }
+#schedules-list > section {
+    padding: 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 5px solid var(--gold-500);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+#schedules-list h3 { margin-bottom: 12px; font-size: 1.4rem; color: var(--gold-800); }
+#schedules-list > section > div:first-of-type { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+#schedules-list ul { margin-bottom: 16px; list-style: none; }
+#schedules-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 4px; border-bottom: 1px dashed var(--gold-300); }
+#schedules-list li:last-child { border-bottom: none; }
+#schedules-list > section > div:last-of-type { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: center; padding-top: 14px; border-top: 2px solid var(--gold-100); }
+
+/* ---------- לוח הניהול (dashboard) ---------- */
+.dash-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; list-style: none; }
+.dash-grid > li { flex: 1 1 240px; max-width: 290px; }
+.dash-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 100%;
+    padding: 26px 24px;
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 5px solid var(--gold-500);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+.dash-card strong { font-family: var(--font-title); font-size: 1.35rem; color: var(--gold-800); }
+.dash-card span { color: var(--ink-soft); }
+.dash-card:hover { color: var(--ink); transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.dash-card:hover strong { color: var(--turq-700); }
+
+/* ---------- התחברות ---------- */
+.login-page main { display: flex; flex-direction: column; justify-content: center; max-width: 460px; }
+.login-brand { margin-bottom: 4px; text-align: center; font-family: var(--font-title); font-size: 1.1rem; font-weight: 700; color: var(--gold-700); letter-spacing: 0.5px; }
+.login-page h1 { margin-bottom: 22px; font-size: 2.2rem; font-weight: 900; text-align: center; color: var(--gold-800); }
+.login-page h1::after {
+    content: '\25C6';
+    display: block;
+    width: 150px;
+    margin: 10px auto 0;
+    font-size: 0.6rem;
+    line-height: 1;
+    text-align: center;
+    color: var(--turq-500);
+    background:
+        linear-gradient(90deg, transparent, var(--gold-400)) 0 50% / 62px 2px no-repeat,
+        linear-gradient(270deg, transparent, var(--gold-400)) 100% 50% / 62px 2px no-repeat;
+}
+.login-page form { display: flex; flex-direction: column; gap: 6px; padding: 28px; background: var(--surface); border: 1px solid var(--border); border-top: 5px solid var(--gold-500); border-radius: var(--radius); box-shadow: var(--shadow); }
+.login-page label { margin-top: 8px; font-weight: 700; color: var(--gold-900); }
+.login-page form button { margin-top: 18px; }
+#login-error { margin-top: 10px; padding: 10px 14px; font-weight: 700; color: var(--danger); background: #fbeceb; border: 1px solid #e2b4af; border-radius: var(--radius-sm); }
+.login-back { margin-top: 18px; text-align: center; }
+
+@media (max-width: 600px) { .admin-page header { padding: 14px 16px; } .admin-page main > form { padding: 20px; } }
+
+/* כפתור "בחירת קובץ" בצבעי האתר */
+input[type="file"]::file-selector-button {
+    margin-inline-end: 12px;
+    padding: 6px 16px;
+    font: inherit;
+    font-weight: 700;
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--gold-400), var(--gold-500));
+    border: 1px solid var(--gold-600);
+    border-radius: 999px;
+    cursor: pointer;
+}
