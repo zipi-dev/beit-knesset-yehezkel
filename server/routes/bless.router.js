@@ -1,7 +1,8 @@
 import { Router } from "express";
 import rateLimit from 'express-rate-limit';
-import { createBlessing, getLatestBlessings } from "../controllers/blessing.controllers.js";
+import { createBlessing, getLatestBlessings ,deleteBlessing, getAllBlessingsAdmin} from "../controllers/blessing.controllers.js";
 import { validate } from "../middlewares/validate.middleware.js";
+import { verifyToken, requireRole } from "../middlewares/auth.middleware.js";
 import { blessingSchema } from "../validators/blessing.validator.js";
 
 const router = Router();
@@ -15,5 +16,6 @@ const blessingLimiter = rateLimit({
 
 router.get('/', getLatestBlessings);
 router.post('/', blessingLimiter, validate(blessingSchema), createBlessing);
-
+router.get('/admin/all', verifyToken, requireRole('admin'), getAllBlessingsAdmin);
+router.delete('/:id', verifyToken, requireRole('admin'), deleteBlessing); 
 export default router;

@@ -11,7 +11,8 @@ import { scheduleBlessingsEmail } from './services/blessingEmailService.js';
 import eventRoutes from './routes/event.routes.js'; 
 import opinionRoutes from './routes/opinion.routes.js';  
 import scheduleRoutes from './routes/schedule.routes.js';
-import zmanimRoutes from './routes/zmanim.routes.js'; // לפי שם הקובץ המדויק אצלך 
+import zmanimRoutes from './routes/zmanim.routes.js'; 
+  import { scheduleKeepAlive } from './services/keepAliveService.js';
 const app = express();
 
 // Connect to the database
@@ -19,6 +20,8 @@ connectDB();
 
 // Schedule the blessings email task
 scheduleBlessingsEmail();
+// Schedule the keep-alive task
+scheduleKeepAlive();
 
 app.use(cors()); 
 app.use(express.json()); // מאפשר לקבל באדי - אוביקט
@@ -34,6 +37,8 @@ app.use('/shiurim', shiurimRoutes);
 app.use('/rabbis', rabbiRoutes);
 app.use('/blessings', blessRoutes);
 app.use('/users', userRoutes);
+
+
 
 app.use(errorHandler);
 
