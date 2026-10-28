@@ -1,134 +1,153 @@
-//fanction need
-// יצירת לוח זמנים (createSchedule): 
-// פונקציה (POST) המקבלת את כותרת הלוח ומערך מלא של התפילות שהגבאי הזין,
-//  ושומרת אותם במסמך אחד ב-MongoDB.
+// createSchedule  (POST)   - מנהל: יצירת לוח עם מערך תפילות
+// getActiveSchedule (GET)  - לקוחות: הלוח שסומן isActive: true
+// getAllSchedules (GET)    - מנהל: כל הלוחות
+// getScheduleById (GET)    - מנהל: לוח בודד (לטופס עריכה)
+// updateSchedule  (PUT)    - מנהל: עריכה, כולל הפעלת לוח
+// deleteSchedule  (DELETE) - מנהל: מחיקת לוח
+// addPrayerToSchedule (POST) - מנהל: הוספת תפילה אחת לסוף הלוח
+// removePrayerFromSchedule (DELETE) - מנהל: הסרת תפילה אחת מהלוח
+import { Schedule } from "../models/schedule.model.js"; // הייבוא הזה חסר היה, ולכן כל הפונקציות נכשלו
 
-// שליפת הלוח הפעיל (getActiveSchedule):
-//  פונקציה (GET) המיועדת לתצוגה באתר עבור קהל המתפללים. 
-// היא תחפש ותחזיר רק את לוח הזמנים שהגבאי סימן בו isActive: true.
+const isCastError = (error) => error.name === "CastError";
+const isValidationError = (error) => error.name === "ValidationError";
 
-// שליפת כל הלוחות (getAllSchedules): 
-// פונקציה (GET) עבור פאנל הניהול של הגבאי, 
-// כדי שיוכל לראות את כל לוחות הזמנים שיצר אי פעם (חול, שבת, חגים).
-
-// עדכון לוח קיים (updateSchedule):
-//  פונקציה (PUT) המאפשרת לגבאי לערוך שעות של תפילה מסוימת, להוסיף פתאום "מוסף" או "מנחה גדולה"
-// , או להחליף איזה לוח פעיל כרגע באתר.
-
-// מחיקת לוח (deleteSchedule):
-//  פונקציה (DELETE) להסרת לוחות זמנים ישנים שכבר אינם בשימוש.
-
-// מחיקת תפילה מתוך מערך התפילות (removePrayerFromSchedule):
-// פונקציה (DELETE) שמקבלת מזהה של לוח ומזהה של תפילה ספציפית, 
-// ומסירה את התפילה מהמערך של הלוח הזה בלבד, מבלי למחוק את כל הלוח עצמו.
+// רק לוח אחד יכול להיות פעיל: כשמפעילים לוח, מכבים את כל האחרים
+const deactivateOthers = (activeId) =>
+    Schedule.updateMany({ _id: { $ne: activeId }, isActive: true }, { isActive: false });
 
 export const createSchedule = async (req, res, next) => {
     try {
-        const newSchedule = new Schedule(req.body);
-        const savedSchedule = await newSchedule.save();
+        const savedSchedule = await new Schedule(req.body).save();
+        if (savedSchedule.isActive) await deactivateOthers(savedSchedule._id);
         res.status(201).json(savedSchedule);
-        
     } catch (error) {
         next({
-            status: 500,
-            type: 'database error',
-             error: error
-        });           
+            status: isValidationError(error) ? 400 : 500,
+            type: isValidationError(error) ? "Validation Error" : "Server Error",
+            error
+        });
     }
 };
+
+// מה שהמתפללים רואים באתר
 export const getActiveSchedule = async (req, res, next) => {
     try {
         const activeSchedule = await Schedule.findOne({ isActive: true });
         if (!activeSchedule) {
-            return next({
-                status: 404,
-                type: 'not found',
-                error: new Error('No active schedule found')
-            });
+            return next({ status: 404, type: "Not Found", error: new Error("No active schedule found") });
         }
-        res.json(activeSchedule);
+        res.status(200).json(activeSchedule);
     } catch (error) {
-        next({
-            status: 500,
-            type: 'database error',
-            error: error
-        });
+        console.error("שגיאה אמיתית בשרת:", error);
+        next({ status: 500, type: "Server Error", error });
     }
 };
+
 export const getAllSchedules = async (req, res, next) => {
     try {
-        const schedules = await Schedule.find();
-        res.json(schedules);
+        const schedules = await Schedule.find().sort({ createdAt: -1 });
+        res.status(200).json(schedules);
+    } catch (error) {
+        
+        next({ status: 500, type: "Server Error", error });
+    }
+};
+
+export const getScheduleById = async (req, res, next) => {
+    try {
+        const schedule = await Schedule.findById(req.params.id);
+        if (!schedule) {
+            return next({ status: 404, type: "Not Found", error: new Error("Schedule not found") });
+        }
+        res.status(200).json(schedule);
     } catch (error) {
         next({
-            status: 500,
-            type: 'database error',
-            error: error
+            status: isCastError(error) ? 400 : 500,
+            type: isCastError(error) ? "Invalid ID" : "Server Error",
+            error
         });
     }
 };
+
 export const updateSchedule = async (req, res, next) => {
     try {
-        const updatedSchedule = await Schedule.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedSchedule = await Schedule.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
         if (!updatedSchedule) {
-            return next({   
-                status: 404,
-                type: 'not found',
-                error: new Error('Schedule not found')
-            });
+            return next({ status: 404, type: "Not Found", error: new Error("Schedule not found") });
         }
-        res.json(updatedSchedule);
+        if (updatedSchedule.isActive) await deactivateOthers(updatedSchedule._id);
+        res.status(200).json(updatedSchedule);
     } catch (error) {
         next({
-            status: 500,
-            type: 'database error',
-            error: error
+            status: isValidationError(error) || isCastError(error) ? 400 : 500,
+            type: isValidationError(error) ? "Validation Error" : isCastError(error) ? "Invalid Data" : "Server Error",
+            error
         });
-    }   
+    }
 };
+
 export const deleteSchedule = async (req, res, next) => {
     try {
         const deletedSchedule = await Schedule.findByIdAndDelete(req.params.id);
         if (!deletedSchedule) {
-            return next({
-                status: 404,
-                type: 'not found',
-                error: new Error('Schedule not found')
-            });
+            return next({ status: 404, type: "Not Found", error: new Error("Schedule not found") });
         }
-        res.json({ message: 'Schedule deleted successfully' });
+        res.status(200).json({ message: 'Schedule deleted successfully' });
     } catch (error) {
         next({
-            status: 500,
-            type: 'database error',
-            error: error
+            status: isCastError(error) ? 400 : 500,
+            type: isCastError(error) ? "Invalid ID" : "Server Error",
+            error
         });
     }
 };
+
+export const addPrayerToSchedule = async (req, res, next) => {
+    try {
+        // $push מוסיף את התפילה (req.body, כבר מאומתת) לסוף מערך prayers בלי לגעת בשאר התפילות
+        const updatedSchedule = await Schedule.findByIdAndUpdate(
+            req.params.scheduleId,
+            { $push: { prayers: req.body } },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedSchedule) {
+            return next({ status: 404, type: "Not Found", error: new Error("Schedule not found") });
+        }
+        res.status(201).json(updatedSchedule); // מחזירים את הלוח המעודכן, והתפילה החדשה בסוף המערך
+    } catch (error) {
+        next({
+            status: isValidationError(error) || isCastError(error) ? 400 : 500,
+            type: isValidationError(error) ? "Validation Error" : isCastError(error) ? "Invalid Data" : "Server Error",
+            error
+        });
+    }
+};
+
 export const removePrayerFromSchedule = async (req, res, next) => {
     try {
-        const { scheduleId, prayerId } = req.params; // מזהה הלוח ומזהה התפילה הספציפית
+        const { scheduleId, prayerId } = req.params;
 
-        const updatedSchedule = await Schedule.findByIdAndUpdate(
-            scheduleId,
-            { $pull: { prayers: { _id: prayerId } } }, // מוחק את התפילה מהמערך לפי ה-ID שלה
+        // התנאי 'prayers._id' מבטיח שגם הלוח וגם התפילה קיימים, אחרת מקבלים null ו-404
+        const updatedSchedule = await Schedule.findOneAndUpdate(
+            { _id: scheduleId, 'prayers._id': prayerId },
+            { $pull: { prayers: { _id: prayerId } } },
             { new: true }
         );
 
         if (!updatedSchedule) {
-            return next({
-                status: 404,
-                type: 'not found',
-                error: new Error('Schedule or prayer not found')
-            });
+            return next({ status: 404, type: "Not Found", error: new Error("Schedule or prayer not found") });
         }
-
-        res.json(updatedSchedule);
+        res.status(200).json(updatedSchedule);
     } catch (error) {
         next({
-            status: 500,
-            type: 'database error',
-            error: error
+            status: isCastError(error) ? 400 : 500,
+            type: isCastError(error) ? "Invalid ID" : "Server Error",
+            error
         });
     }
 };

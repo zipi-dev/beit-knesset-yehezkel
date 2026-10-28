@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בקשת ברכה - בית כנסת יחזקאל</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/blessings.css">
+    <script type="module" src="../js/blessingMenu.js"></script>
+</head>
+<body>
+    <section class="page-header">
+        <h1>ברכות</h1>
+        <p>בקשות לברכה ולתפילה מהקהילה</p>
+    </section>
+
+    <main>
+        <section class="form-card">
+            <h2>הוספת בקשת ברכה</h2>
+            <form id="blessing-form">
+                <div>
+                    <label for="blessing-name">שם פרטי:</label>
+                    <input type="text" id="blessing-name" required maxlength="60">
+                </div>
+                <div>
+                    <label for="blessing-mother">שם האם:</label>
+                    <input type="text" id="blessing-mother" required maxlength="60">
+                </div>
+                <div>
+                    <label for="blessing-type">סוג הברכה:</label>
+                    <select id="blessing-type" required>
+                        <option value="רפואה שלמה">רפואה שלמה</option>
+                        <option value="זיווג הגון">זיווג הגון</option>
+                        <option value="פרנסה טובה">פרנסה טובה</option>
+                        <option value="ברכה והצלחה">ברכה והצלחה</option>
+                        <option value="חזרה בתשובה">חזרה בתשובה</option>
+                    </select>
+                </div>
+                <button type="submit">שלח בקשה</button>
+                <p id="blessing-status" role="status"></p>
+            </form>
+        </section>
+
+        <section class="blessings-list-section">
+            <h2>ברכות אחרונות</h2>
+            <div id="blessings-container" class="cards-grid">
+                <p>טוען ברכות...</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

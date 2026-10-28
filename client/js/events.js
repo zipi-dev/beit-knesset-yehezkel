@@ -1,71 +1,91 @@
 /**
- * מחלצת את כתובת התמונה הממוצעת (Thumbnail) מסרטון יוטיוב (תומך בלינקים רגילים, קצרים ו-Shorts)
- * @param {string} url - כתובת ה-URL של סרטון היוטיוב
- * @returns {string|null} - מחזיר את כתובת התמונה או null אם הקישור לא תקין
+ * מחלצת את תמונת הממוזערת מסרטון יוטיוב (רגיל, קצר, Shorts או embed)
+ * @param {string} url
+ * @returns {string|null}
  */
 const getYouTubeThumbnail = (url) => {
     if (!url || typeof url !== 'string' || url.length > 500) return null;
-    
-    // חיפוש ה-ID של הסרטון באמצעות Regex
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/))([\w-]{11})/);
-    
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([\w-]{11})/);
     return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
 };
 
+// מאפשר רק קישורי http/https (הגנה מפני javascript:)
+const isSafeHttpUrl = (url) => {
+    try {
+        const { protocol } = new URL(url);
+        return protocol === 'http:' || protocol === 'https:';
+    } catch {
+        return false;
+    }
+};
+
+
+// Cloudinary יודע להקטין תמונה "תוך כדי תנועה": מוסיפים הוראות לכתובת (רוחב מקסימלי + דחיסה אוטומטית)
+const optimizeCloudinaryUrl = (url, width = 800) =>
+    url.includes('/upload/') ? url.replace('/upload/', `/upload/w_${width},c_limit,q_auto,f_auto/`) : url;
+
 /**
- * יוצרת כרטיס אירוע ויזואלי (DOM Element) בהתאם לסכימה של המשתמש
- * @param {Object} event - אובייקט האירוע שמגיע מהשרת
- * @returns {HTMLElement} - כרטיס האירוע המוכן להוספה לדף
+ * יוצרת כרטיס אירוע (DOM Element)
+ * @param {Object} event - אובייקט האירוע מהשרת
+ * @returns {HTMLElement}
  */
 export const createEventCard = (event) => {
-    // 1. יצירת אלמנט ה-article הראשי של הכרטיס
     const card = document.createElement('article');
     card.classList.add('event-card');
 
-    // 2. טיפול במדיה: אם קיים mediaUrl (קישור ליוטיוב), ניצור תמונה עטופה בקישור
-    if (event.mediaUrl) {
+    // תמונה שהועלתה (Cloudinary): לחיצה פותחת את התמונה בגודל מלא בלשונית חדשה
+    const hasUploadedImage = Boolean(event.imageUrl && isSafeHttpUrl(event.imageUrl));
+    if (hasUploadedImage) {
+        const link = document.createElement('a');
+        link.href = event.imageUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.classList.add('event-image-link', 'event-image-link--photo');
+
+        const image = document.createElement('img');
+        image.src = optimizeCloudinaryUrl(event.imageUrl);
+        image.alt = event.name;
+        image.loading = 'lazy';
+        image.classList.add('event-image');
+
+        link.appendChild(image);
+        card.appendChild(link);
+    }
+
+    // מדיה: יוטיוב -> תמונה לחיצה (רק אם אין תמונה שהועלתה). קישור אחר -> קישור טקסט רגיל.
+    if (!hasUploadedImage && event.mediaUrl && isSafeHttpUrl(event.mediaUrl)) {
         const thumbnailUrl = getYouTubeThumbnail(event.mediaUrl);
-        
-        
+
         if (thumbnailUrl) {
-            // יצירת תגית <a> 
             const link = document.createElement('a');
             link.href = event.mediaUrl;
-            // הסרנו את link.target = '_blank' ואת link.rel כדי שייפתח באותו חלון
             link.classList.add('event-image-link');
 
-            // יצירת תגית <img> לתצוגת התמונה הממוצעת של סרטון היוטיוב
             const image = document.createElement('img');
             image.src = thumbnailUrl;
             image.alt = event.name;
             image.classList.add('event-image');
 
-            // הוספת התמונה לתוך הקישור, ואת הקישור לתוך הקארד
             link.appendChild(image);
             card.appendChild(link);
         }
     }
 
-    // 3. יצירת קונטיינר פנימי לפרטי הטקסט של האירוע
     const contentDiv = document.createElement('div');
     contentDiv.classList.add('event-info');
 
-    // שם האירוע (name לפי הסכימה)
     const title = document.createElement('h3');
     title.textContent = event.name;
     title.classList.add('event-title');
     contentDiv.appendChild(title);
 
-    // תאריך האירוע (eventDate לפי הסכימה) - המרה לתאריך קריא בעברית
     if (event.eventDate) {
         const dateElement = document.createElement('p');
         dateElement.classList.add('event-date');
-        const formattedDate = new Date(event.eventDate).toLocaleDateString('he-IL');
-        dateElement.textContent = `תאריך: ${formattedDate}`;
+        dateElement.textContent = `תאריך: ${new Date(event.eventDate).toLocaleDateString('he-IL')}`;
         contentDiv.appendChild(dateElement);
     }
 
-    // תיאור האירוע (description.text לפי מבנה הסכימה שלך)
     if (event.description && event.description.text) {
         const descElement = document.createElement('p');
         descElement.textContent = event.description.text;
@@ -73,7 +93,6 @@ export const createEventCard = (event) => {
         contentDiv.appendChild(descElement);
     }
 
-    // צלם האירוע (photographer לפי הסכימה) - שדה אופציונלי
     if (event.photographer) {
         const photoElement = document.createElement('p');
         photoElement.textContent = `צילום: ${event.photographer}`;
@@ -81,8 +100,17 @@ export const createEventCard = (event) => {
         contentDiv.appendChild(photoElement);
     }
 
-    // צירוף אזור הטקסט לכרטיס הראשי
-    card.appendChild(contentDiv);
+    // קישור מדיה שלא מוצג כתמונה (לא יוטיוב, או שיש תמונה שהועלתה): מציגים קישור טקסט כדי שלא ייעלם
+    if (event.mediaUrl && isSafeHttpUrl(event.mediaUrl) && (hasUploadedImage || !getYouTubeThumbnail(event.mediaUrl))) {
+        const mediaLink = document.createElement('a');
+        mediaLink.href = event.mediaUrl;
+        mediaLink.target = '_blank';
+        mediaLink.rel = 'noopener noreferrer';
+        mediaLink.textContent = getYouTubeThumbnail(event.mediaUrl) ? 'לצפייה בסרטון' : 'לצפייה במדיה';
+        mediaLink.classList.add('event-media-link');
+        contentDiv.appendChild(mediaLink);
+    }
 
-    return card; // מחזיר את האלמנט המוגמר
+    card.appendChild(contentDiv);
+    return card;
 };

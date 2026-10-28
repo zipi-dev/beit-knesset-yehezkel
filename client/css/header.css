@@ -1,0 +1,97 @@
+/* =====================================================
+   header.css - סרגל הניווט העליון (נוצר ב-js/header.js)
+   שמנת עם פס זהב; הדף הנוכחי מודגש בזהב.
+   ===================================================== */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 253, 248, 0.96);
+    backdrop-filter: blur(6px);
+    border-bottom: 3px solid var(--gold-500);
+    box-shadow: 0 2px 14px rgba(107, 79, 23, 0.14);
+}
+/* פס דק של זהב וטורקיז מתחת לסרגל */
+.site-header::after {
+    content: '';
+    position: absolute;
+    inset: 100% 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold-400), var(--turq-500) 50%, var(--gold-400));
+}
+
+.nav-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+/* שם בית הכנסת */
+.logo-container a { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.site-title {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold-800);
+    letter-spacing: 0.3px;
+}
+
+/* קישורי הניווט */
+.nav-menu { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-menu a {
+    display: block;
+    padding: 8px 14px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 999px;
+    transition: background 0.2s, color 0.2s;
+}
+.nav-menu a:hover { color: var(--gold-900); background: var(--gold-100); }
+.nav-menu a.active { color: var(--ink); background: linear-gradient(180deg, var(--gold-300), var(--gold-500)); font-weight: 700; }
+
+/* כפתור תפריט (המבורגר) - מופיע רק בנייד */
+.nav-toggle {
+    display: none;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: var(--gold-100);
+    border: 1px solid var(--gold-300);
+    border-radius: 12px;
+}
+.nav-toggle:hover { background: var(--gold-200); box-shadow: none; }
+.nav-toggle-bar { display: block; width: 22px; height: 2.5px; background: var(--gold-800); border-radius: 2px; transition: transform 0.25s, opacity 0.25s; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+@media (max-width: 900px) {
+    .nav-toggle { display: flex; }
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        padding: 10px 16px 16px;
+        background: var(--cream-50);
+        border-bottom: 3px solid var(--gold-500);
+        box-shadow: 0 10px 20px rgba(107, 79, 23, 0.12);
+    }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { padding: 13px 16px; border-radius: var(--radius-sm); }
+}
+@media (max-width: 420px) { .site-title { font-size: 1.25rem; } }

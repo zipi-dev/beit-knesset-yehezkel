@@ -1,5 +1,8 @@
+import createHeader from './header.js';
+import createFooter from './footer.js';
 import { getEvents } from '../services/eventService.js';
 import { createEventCard } from './events.js';
+
 
 /**
  * פונקציה ראשית האחראית על טעינת האירועים מהשרת והצגתם בעמוד
@@ -45,6 +48,14 @@ const renderEventsList = (events, container) => {
     // הזרקת כל הכרטיסים המובילים לקונטיינר בבת אחת בצורה נקייה ובטוחה (ללא innerHTML)
     container.replaceChildren(...cardElements);
 };
-
+async function initEventsPage() {
+    createHeader();
+    await loadEventsPage();
+    createFooter();
+}
 // האזנה לאירוע טעינת מסמך ה-HTML (DOMContentLoaded) והפעלת תהליך הטעינה
-document.addEventListener('DOMContentLoaded', loadEventsPage);
+document.addEventListener('DOMContentLoaded', () => 
+   {
+   initEventsPage(); 
+   });
+
