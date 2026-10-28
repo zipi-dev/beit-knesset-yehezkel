@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>לוח ניהול | בית הכנסת יחזקאל</title>
+    <link rel="icon" type="image/png" href="../../icon.png">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../css/admin.css">
     <script type="module" src="../js/adminGuard.js"></script>
+    <script type="module" src="../js/dashboard.js"></script>
+</head>
 </head>
 
 <!-- כל מי שמחובר רשאי להיכנס ללוח הניהול. data-for-roles קובע מי רואה כל קישור -->
@@ -15,6 +18,7 @@
         <h1>לוח ניהול</h1>
         <p id="admin-greeting"></p>
         <a href="../../index.html">לאתר</a>
+        <button id="add-user-btn" data-for-roles="admin" type="button">הוספת מנהל</button>
         <button id="logout-btn" type="button">התנתק</button>
     </header>
     <main>
