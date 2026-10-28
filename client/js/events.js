@@ -19,6 +19,11 @@ const isSafeHttpUrl = (url) => {
     }
 };
 
+
+// Cloudinary יודע להקטין תמונה "תוך כדי תנועה": מוסיפים הוראות לכתובת (רוחב מקסימלי + דחיסה אוטומטית)
+const optimizeCloudinaryUrl = (url, width = 800) =>
+    url.includes('/upload/') ? url.replace('/upload/', `/upload/w_${width},c_limit,q_auto,f_auto/`) : url;
+
 /**
  * יוצרת כרטיס אירוע (DOM Element)
  * @param {Object} event - אובייקט האירוע מהשרת
@@ -28,8 +33,27 @@ export const createEventCard = (event) => {
     const card = document.createElement('article');
     card.classList.add('event-card');
 
-    // מדיה: יוטיוב -> תמונה לחיצה. קישור אחר -> קישור טקסט רגיל.
-    if (event.mediaUrl && isSafeHttpUrl(event.mediaUrl)) {
+    // תמונה שהועלתה (Cloudinary): לחיצה פותחת את התמונה בגודל מלא בלשונית חדשה
+    const hasUploadedImage = Boolean(event.imageUrl && isSafeHttpUrl(event.imageUrl));
+    if (hasUploadedImage) {
+        const link = document.createElement('a');
+        link.href = event.imageUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.classList.add('event-image-link', 'event-image-link--photo');
+
+        const image = document.createElement('img');
+        image.src = optimizeCloudinaryUrl(event.imageUrl);
+        image.alt = event.name;
+        image.loading = 'lazy';
+        image.classList.add('event-image');
+
+        link.appendChild(image);
+        card.appendChild(link);
+    }
+
+    // מדיה: יוטיוב -> תמונה לחיצה (רק אם אין תמונה שהועלתה). קישור אחר -> קישור טקסט רגיל.
+    if (!hasUploadedImage && event.mediaUrl && isSafeHttpUrl(event.mediaUrl)) {
         const thumbnailUrl = getYouTubeThumbnail(event.mediaUrl);
 
         if (thumbnailUrl) {
@@ -76,13 +100,13 @@ export const createEventCard = (event) => {
         contentDiv.appendChild(photoElement);
     }
 
-    // קישור מדיה שאינו יוטיוב: מציגים קישור טקסט כדי שלא ייעלם
-    if (event.mediaUrl && isSafeHttpUrl(event.mediaUrl) && !getYouTubeThumbnail(event.mediaUrl)) {
+    // קישור מדיה שלא מוצג כתמונה (לא יוטיוב, או שיש תמונה שהועלתה): מציגים קישור טקסט כדי שלא ייעלם
+    if (event.mediaUrl && isSafeHttpUrl(event.mediaUrl) && (hasUploadedImage || !getYouTubeThumbnail(event.mediaUrl))) {
         const mediaLink = document.createElement('a');
         mediaLink.href = event.mediaUrl;
         mediaLink.target = '_blank';
         mediaLink.rel = 'noopener noreferrer';
-        mediaLink.textContent = 'לצפייה במדיה';
+        mediaLink.textContent = getYouTubeThumbnail(event.mediaUrl) ? 'לצפייה בסרטון' : 'לצפייה במדיה';
         mediaLink.classList.add('event-media-link');
         contentDiv.appendChild(mediaLink);
     }

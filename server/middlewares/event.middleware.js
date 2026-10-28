@@ -17,7 +17,12 @@ export const validateEvent = (req, res, next) => {
         // רק http/https - חוסם כתובות מסוכנות כמו javascript:
         mediaUrl: Joi.string().trim().uri({ scheme: ['http', 'https'] }).allow('').optional().messages({
             'string.uri': 'קישור המדיה אינו תקין'
-        })
+        }),
+        // תמונה שהועלתה: מאשרים רק כתובת שמגיעה מ-Cloudinary
+        imageUrl: Joi.string().trim().pattern(/^https:\/\/res\.cloudinary\.com\//).allow('').optional().messages({
+            'string.pattern.base': 'כתובת התמונה אינה תקינה'
+        }),
+        imagePublicId: Joi.string().trim().max(200).allow('').optional()
     });
 
     const { error, value } = schema.validate(req.body);

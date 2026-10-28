@@ -78,3 +78,16 @@ export const deleteEvent = async (req, res, next) => {
         });
     }
 };
+
+// העלאת תמונה ל-Cloudinary. מחזיר { url, publicId } - הלקוח שומר אותם יחד עם האירוע
+export const uploadEventImage = async (req, res, next) => {
+    try {
+        if (!req.file) {
+            return next({ status: 400, type: "Upload Error", error: new Error("לא נבחרה תמונה") });
+        }
+        const image = await uploadImageBuffer(req.file.buffer);
+        res.status(201).json(image);
+    } catch (error) {
+        next({ status: 500, type: "Upload Error", error });
+    }
+};
