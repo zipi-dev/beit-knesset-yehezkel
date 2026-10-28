@@ -6,8 +6,7 @@ import {createRabbiCard} from './rabbi.js';
 import {setupSearchAutocomplete} from './searchAutocomplete.js';
 import {getAllShiurim, getShiurById, deleteShiur, addShiur,updateShiur} from '../services/shiurimService.js';
 import {openShiurDialog} from '../admin/js/shiurDialog.js';
-import {openUserDialog} from '../admin/js/userDialog.js';
-import {registerUser, getAllUsers, deleteUser} from '../services/userService.js';
+import { getAllUsers, deleteUser} from '../services/userService.js';
 
 
 let currentPage = 1;
@@ -74,24 +73,9 @@ const initAddButton = () => {
 
 
 
-//זה אמור להיות בעיקרון בקובץ אחרררררררררררררררררררררררררררררררררררר
 
 
 
-// The "add manager" button - only the main manager sees it (the server checks again)
-const initAddUserButton = () => {
-    const addUserBtn = document.getElementById('add-user-btn');
-    if (!addUserBtn || currentUser?.role !== 'admin') return;
-
-    addUserBtn.classList.remove('hidden');
-    addUserBtn.addEventListener('click', () => openUserDialog({
-        onSave: async (data) => {
-            await registerUser(data);
-            alert('המנהל נוסף בהצלחה');
-            loadRabbisSection(); // refresh, so a new rabbi appears in the list
-        }
-    }));
-};
 
 
 
@@ -218,7 +202,7 @@ const loadShiurim = async (filters = {}, isReset = false) => {
 
 const initShiurimPage = async () => {
     initAddButton();
-    initAddUserButton();
+   
     try {
         // Fetch rabbis and initial shiurim in parallel for optimal performance
         await Promise.all([
