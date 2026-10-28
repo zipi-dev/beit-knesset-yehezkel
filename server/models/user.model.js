@@ -13,19 +13,12 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.pre('save', async function (next) {
-//If the password field has not been modified, skip hashing and proceed to the next middleware
-    if (!this.isModified('password')) {
-        return next();
-    }
-    
-    try {
-        const saltRounds = Number(env.BCRYPT_ROUNDS);
-        this.password = await bcrypt.hash(this.password, saltRounds);
-        next();
-    } catch (error) {
-        next(error);
-    }
+userSchema.pre('save', async function () {
+    // If the password field has not been modified, skip hashing
+    if (!this.isModified('password')) return;
+
+    const saltRounds = Number(env.BCRYPT_ROUNDS);
+    this.password = await bcrypt.hash(this.password, saltRounds);
 });
 
 export const User = model('User', userSchema);

@@ -5,7 +5,7 @@ import { createHash,timingSafeEqual } from 'crypto';
 import { env } from '../config/env.js';
 import { Rabbi } from '../models/rabbi.model.js';
 import { isValidObjectId } from 'mongoose';
-
+import { Shiur } from '../models/shiurim.model.js';
 
 // Compare two values in a timing-safe manner to prevent timing attacks
 const hash = (value) => createHash('sha256').update(String(value)).digest(); //Get text and convert it to a hash using the SHA-256 algorithm
@@ -190,14 +190,23 @@ export const deleteUser = async (req, res, next) => {
             });
         }
 
-        const deletedUser = await User.findByIdAndDelete(id);
-        if (!deletedUser) {
+        const user = await User.findById(id);
+        if (!user) {
             return next({
                 status: 404,
                 type: 'not found',
                 error: { message: 'המשתמש לא נמצא' }
             });
         }
+
+        // A rabbi: first his shiurim, then his profile, and only at the end the user himself.
+        // If something fails in the middle, the user still exists and the delete can be repeated.
+        if (user.rabbiProfile) {
+            await Shiur.deleteMany({ rabbi: user.rabbiProfile });
+            await Rabbi.findByIdAndDelete(user.rabbiProfile);
+        }
+        await user.deleteOne();
+
         res.json({ message: 'המשתמש נמחק בהצלחה' });
     } catch (error) {
         next({ status: 500, error, type: 'server error' });
