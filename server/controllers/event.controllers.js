@@ -1,6 +1,6 @@
 // getAllEvents - לקוחות | getEventById - מנהל | createEvent / updateEvent / deleteEvent - מנהל
 import { Event } from "../models/event.model.js";
-
+import { uploadImageBuffer } from "../services/imageService.js";
 const isCastError = (error) => error.name === "CastError";
 const isValidationError = (error) => error.name === "ValidationError";
 

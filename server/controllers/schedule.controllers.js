@@ -38,6 +38,7 @@ export const getActiveSchedule = async (req, res, next) => {
         }
         res.status(200).json(activeSchedule);
     } catch (error) {
+        console.error("שגיאה אמיתית בשרת:", error);
         next({ status: 500, type: "Server Error", error });
     }
 };
@@ -47,6 +48,7 @@ export const getAllSchedules = async (req, res, next) => {
         const schedules = await Schedule.find().sort({ createdAt: -1 });
         res.status(200).json(schedules);
     } catch (error) {
+        
         next({ status: 500, type: "Server Error", error });
     }
 };

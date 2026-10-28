@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>לוח תפילות וזמני השבת - בית הכנסת</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title>לוח תפילות וזמני השבת - בית כנסת יחזקאל</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/schedule.css">
 </head>
 <body>
 
-    <header>
+    <!-- לא משתמשים בתגית header כאן: סרגל הניווט (header.js) כבר יוצר header -->
+    <section class="page-header">
         <h1>לוח תפילות וזמני השבת</h1>
-    </header>
+    </section>
 
     <main>
         <!-- חלק 1: לוח זמני התפילות הפעיל -->
-        <section class="schedule-section">
+        <section class="schedule-section" id="schedule">
             <h2>לוח תפילות בית הכנסת</h2>
             <div id="schedule-container">
                 <p>טוען זמני תפילות...</p>
@@ -23,8 +27,8 @@
 
         <hr class="section-divider">
 
-        <!-- חלק 2: זמני השבת ההלכתיים לערים -->
-        <section class="zmanim-section">
+        <!-- חלק 2: זמני השבת. ה-id מאפשר לקישור schedule.html#zmanim לגלול לכאן -->
+        <section class="zmanim-section" id="zmanim">
             <h2>זמני השבת (כניסה ויציאה)</h2>
             <div id="zmanim-container">
                 <p>טוען זמני שבת...</p>
@@ -32,7 +36,6 @@
         </section>
     </main>
 
-    <!-- טעינת הבקר המרכזי המאוחד -->
     <script type="module" src="../js/scheduleMenu.js"></script>
 </body>
 </html>

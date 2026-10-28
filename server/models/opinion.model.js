@@ -19,10 +19,10 @@ const opinionSchema = new Schema({
         type: Number, 
         default: 0 
     }, // מספר הלייקים
-  likedBy: [{
+  likedBy: {
     type:[String],
     default: []
-  }] // מערך של מזהי משתמשים שהוסיפו לייק   
+  }// מערך של מזהי משתמשים שהוסיפו לייק   
 },{
     timestamps: true // מוסיף אוטומטית createdAt ו-updatedAt (מתי בדיוק נכתבה חוות הדעת)
 });

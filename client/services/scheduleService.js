@@ -1,5 +1,6 @@
 import { handleResponse, ApiError } from './apiClient.js';
 import { API_URL } from '../config.js';
+import { getAuthHeaders } from './authService.js';
 
 const URL = `${API_URL}/api/schedule`;
 
@@ -18,7 +19,7 @@ export const getActiveSchedule = async () => {
 // 2.מנהל - שליפת כל הלוחות (למנהל בלבד)
 export const getAllSchedules = async () => {
     try {
-        const response = await fetch(URL);
+        const response = await fetch(URL, { headers: getAuthHeaders() });
         return await handleResponse(response);
     } catch (error) {
         console.error('Error fetching schedules:', error);
@@ -29,7 +30,7 @@ export const getAllSchedules = async () => {
 export const getScheduleById = async (id) => {
 
     try {
-        const response = await fetch(`${URL}/${id}`);
+        const response = await fetch(`${URL}/${id}`, { headers: getAuthHeaders() });
         return await handleResponse(response);
     } catch (error) {
         console.error(`Error fetching schedule with id ${id}:`, error);
@@ -41,9 +42,7 @@ export const createSchedule = async (scheduleData) => {
     try {
         const response = await fetch(URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(scheduleData)
             
         });
@@ -59,9 +58,7 @@ export const updateSchedule = async (id, scheduleData) => {
     try {
         const response = await fetch(`${URL}/${id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(scheduleData)
         });
         return await handleResponse(response);
@@ -74,7 +71,8 @@ export const updateSchedule = async (id, scheduleData) => {
 export const deleteSchedule = async (id) => {
     try {
         const response = await fetch(`${URL}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         return await handleResponse(response);
     } catch (error) {
@@ -86,7 +84,8 @@ export const deleteSchedule = async (id) => {
 export const removePrayerFromSchedule = async (scheduleId, prayerId) => {
     try {
         const response = await fetch(`${URL}/${scheduleId}/prayer/${prayerId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         return await handleResponse(response);
     } catch (error) {
@@ -98,7 +97,7 @@ export const addPrayerToSchedule = async (scheduleId, prayer) => {
     try {
         const response = await fetch(`${URL}/${scheduleId}/prayer`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders(),
             body: JSON.stringify(prayer)
         });
         return await handleResponse(response);

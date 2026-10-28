@@ -1,3 +1,6 @@
+const CLIENT_ROOT = new URL('../', import.meta.url);
+const pageUrl = (path) => new URL(path, CLIENT_ROOT).href;
+
 /**
  * יוצר את תחתית העמוד (Footer) המעוצבת עבור כל דפי האתר
  */
@@ -31,13 +34,13 @@ const createFooterNav = () => {
 
     const navList = document.createElement('ul');
     const navItems = [
-        { text: 'דף הבית', href: 'index.html' },
-        { text: 'לוח תפילות', href: 'schedule.html' },
-        { text: 'זמני השבת', href: 'zmanim.html' },
-        { text: 'אירועי הקהילה', href: 'events.html' },
-        { text: 'שיעורי תורה', href: 'shiurim.html' },
-        { text: 'חוות דעת', href: 'opinions.html' },
-        { text: 'ברכות', href: 'blessings.html' }
+        { text: 'דף הבית', href: pageUrl('index.html') },
+        { text: 'לוח תפילות', href: pageUrl('html/schedule.html') },
+        { text: 'זמני השבת', href: pageUrl('html/schedule.html#zmanim') },
+        { text: 'אירועי הקהילה', href: pageUrl('html/events.html') },
+        { text: 'שיעורי תורה', href: pageUrl('html/shiurim.html') },
+        { text: 'חוות דעת', href: pageUrl('html/opinions.html') },
+        { text: 'ברכות', href: pageUrl('html/blessings.html') }
     ];
 
     navItems.forEach(item => {
@@ -91,7 +94,7 @@ const createFooterBottom = () => {
 
     // כפתור כניסת מנהל דיסקרטי עם אייקון מנעול SVG
     const adminLink = document.createElement('a');
-    adminLink.href = 'admin.html';
+    adminLink.href = pageUrl('admin/html/login.html');
     adminLink.classList.add('admin-lock-btn');
     adminLink.setAttribute('aria-label', 'כניסת מנהל');
 
@@ -116,7 +119,9 @@ const createFooterBottom = () => {
     path.setAttribute('d', 'M7 11V7a5 5 0 0 1 10 0v4');
 
     svg.append(rect, path);
-    adminLink.appendChild(svg);
+    const label = document.createElement('span');
+    label.textContent = ' כניסת מנהל';
+    adminLink.append(svg, label);
 
     container.append(copyright, adminLink);
     bottomBar.appendChild(container);

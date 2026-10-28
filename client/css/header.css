@@ -1,0 +1,97 @@
+/* =====================================================
+   header.css - סרגל הניווט העליון (נוצר ב-js/header.js)
+   ===================================================== */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--turq-900), var(--turq-700));
+    border-bottom: 3px solid var(--accent);
+    box-shadow: 0 2px 14px rgba(6, 65, 74, 0.28);
+}
+
+.nav-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+/* לוגו + שם בית הכנסת */
+.logo-container a { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+
+.site-logo-img {
+    width: 50px;
+    height: 50px;
+    padding: 3px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--turq-200);
+}
+
+.site-title {
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.3px;
+}
+
+/* קישורי הניווט */
+.nav-menu { display: flex; align-items: center; gap: 4px; list-style: none; }
+
+.nav-menu a {
+    display: block;
+    padding: 8px 13px;
+    font-weight: 500;
+    color: #e6fbfc;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: background 0.2s, color 0.2s;
+}
+.nav-menu a:hover { color: #fff; background: rgba(255, 255, 255, 0.15); }
+.nav-menu a.active { color: var(--turq-900); background: var(--accent); font-weight: 700; }
+
+/* כפתור תפריט (המבורגר) - מופיע רק בנייד */
+.nav-toggle {
+    display: none;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+}
+.nav-toggle:hover { background: rgba(255, 255, 255, 0.22); box-shadow: none; }
+.nav-toggle-bar { display: block; width: 22px; height: 2.5px; background: #fff; border-radius: 2px; transition: transform 0.25s, opacity 0.25s; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+@media (max-width: 980px) {
+    .nav-toggle { display: flex; }
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        padding: 10px 16px 16px;
+        background: var(--turq-900);
+        border-bottom: 3px solid var(--accent);
+    }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { padding: 13px 16px; border-radius: var(--radius-sm); }
+}
+@media (max-width: 420px) { .site-title { font-size: 1.2rem; } .site-logo-img { width: 42px; height: 42px; } }

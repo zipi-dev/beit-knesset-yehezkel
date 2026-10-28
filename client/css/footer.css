@@ -1,0 +1,60 @@
+/* =====================================================
+   footer.css - תחתית האתר (נוצרת ב-js/footer.js)
+   ===================================================== */
+.site-footer { margin-top: auto; color: #fff; background: var(--turq-900); }
+
+/* פס הזמנה בראש התחתית */
+.footer-cta {
+    padding: 40px 20px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(135deg, var(--turq-600), var(--turq-400));
+}
+.footer-cta h2 { margin-bottom: 8px; font-size: 1.8rem; color: #fff; }
+.footer-cta p { font-size: 1.1rem; opacity: 0.95; }
+
+.footer-main { padding: 48px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+.footer-nav-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 40px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+}
+
+.footer-col h3 {
+    position: relative;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    font-size: 1.2rem;
+    color: var(--turq-200);
+}
+.footer-col h3::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; color: #cfeff1; }
+.footer-col a { color: #cfeff1; text-decoration: none; transition: color 0.2s, padding 0.2s; }
+.footer-col a:hover { color: var(--accent); padding-right: 4px; }
+
+.footer-bottom { padding: 18px 0; background: #042f36; }
+.footer-bottom-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.copyright { font-size: 0.9rem; color: #8fb8bc; }
+.admin-lock-btn { display: flex; align-items: center; gap: 4px; font-size: 0.9rem; color: #8fb8bc; text-decoration: none; transition: color 0.2s; }
+.admin-lock-btn:hover { color: var(--accent); }

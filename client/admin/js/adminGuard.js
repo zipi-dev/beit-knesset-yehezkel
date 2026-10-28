@@ -19,9 +19,15 @@ const buildGreeting = async (user) => {
     return user.role === 'admin' ? 'שלום מנהל' : 'שלום';
 };
 
+// התפקידים שמורשים לראות את הדף נקבעים ב-<body data-roles="admin,gabbai">
+const allowedRoles = (document.body.dataset.roles || '').split(',').map(r => r.trim()).filter(Boolean);
+
 if (!user || !localStorage.getItem('token')) {
     // Not logged in - back to the login page
     window.location.href = './login.html';
+} else if (allowedRoles.length && !allowedRoles.includes(user.role)) {
+    // Logged in but without permission for this page
+    window.location.href = './dashboard.html';
 } else {
     buildGreeting(user).then(text => {
         document.getElementById('admin-greeting').textContent = text;

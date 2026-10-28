@@ -1,0 +1,53 @@
+/* =====================================================
+   opinions.css - חוות דעת (opinions.html)
+   ===================================================== */
+#opinions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 22px;
+}
+#opinions-container > p { grid-column: 1 / -1; text-align: center; color: var(--muted); }
+
+.opinion-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 22px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: 5px solid var(--turq-500);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+.opinion-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+/* סימן ציטוט דקורטיבי */
+.opinion-card::after {
+    content: "\201D";
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    font-family: var(--font-title);
+    font-size: 4.5rem;
+    line-height: 1;
+    color: var(--turq-100);
+    pointer-events: none;
+}
+
+.opinion-author { font-size: 1.15rem; color: var(--turq-700); }
+.opinion-comment { flex: 1; white-space: pre-wrap; overflow-wrap: anywhere; }
+.opinion-date { font-size: 0.85rem; color: var(--muted); }
+
+.like-btn {
+    align-self: flex-start;
+    min-height: 38px;
+    padding: 6px 18px;
+    color: var(--turq-700);
+    background: var(--turq-50);
+    border: 1.5px solid var(--turq-200);
+    box-shadow: none;
+}
+.like-btn:hover { color: #fff; background: var(--turq-600); border-color: var(--turq-600); }
+/* אחרי שהמבקר כבר נתן לייק */
+.like-btn.liked, .like-btn.liked:disabled { opacity: 1; color: var(--turq-900); background: var(--accent); border-color: var(--accent); cursor: default; }

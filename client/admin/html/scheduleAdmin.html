@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול לוח זמנים | בית הכנסת יחזקאל</title>
+    <script type="module" src="../js/adminGuard.js"></script>
+    <script type="module" src="../js/scheduleAdmin.js"></script>
+</head>
+
+<body dir="rtl" data-roles="admin">
+    <header>
+        <h1>ניהול לוח זמנים</h1>
+        <p id="admin-greeting"></p>
+        <a href="./dashboard.html">חזרה ללוח הניהול</a>
+        <button id="logout-btn" type="button">התנתק</button>
+    </header>
+    <main>
+        <form id="schedule-form">
+            <label for="title">כותרת הלוח (למשל: ימי חול חורף)</label>
+            <input type="text" id="title" maxlength="150" required>
+            <label for="date">תאריך (לא חובה)</label>
+            <input type="date" id="date">
+            <button type="submit">צור לוח חדש</button>
+        </form>
+        <div id="schedules-list"></div>
+    </main>
+</body>
+</html>
