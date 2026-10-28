@@ -1,10 +1,14 @@
 import {getCurrentUser} from '../services/authService.js';
 import {createShiurCard} from './shiur.js';
-import {getAllRabbis} from '../services/rabbiService.js';
+import {getAllRabbis, updateRabbi} from '../services/rabbiService.js';
+import {openSimpleDialog} from '../admin/js/simpleDialog.js';
 import {createRabbiCard} from './rabbi.js';
 import {setupSearchAutocomplete} from './searchAutocomplete.js';
 import {getAllShiurim, getShiurById, deleteShiur, addShiur,updateShiur} from '../services/shiurimService.js';
 import {openShiurDialog} from '../admin/js/shiurDialog.js';
+import {openUserDialog} from '../admin/js/userDialog.js';
+import {registerUser, getAllUsers, deleteUser} from '../services/userService.js';
+
 
 let currentPage = 1;
 let currentFilters = {};
@@ -68,23 +72,98 @@ const initAddButton = () => {
     }
 };
 
+
+
+//זה אמור להיות בעיקרון בקובץ אחרררררררררררררררררררררררררררררררררררר
+
+
+
+// The "add manager" button - only the main manager sees it (the server checks again)
+const initAddUserButton = () => {
+    const addUserBtn = document.getElementById('add-user-btn');
+    if (!addUserBtn || currentUser?.role !== 'admin') return;
+
+    addUserBtn.classList.remove('hidden');
+    addUserBtn.addEventListener('click', () => openUserDialog({
+        onSave: async (data) => {
+            await registerUser(data);
+            alert('המנהל נוסף בהצלחה');
+            loadRabbisSection(); // refresh, so a new rabbi appears in the list
+        }
+    }));
+};
+
+
+
 // What the card receives: a delete function only if the user may manage this shiur
 const cardOptions = (shiur) => (canManage(shiur) ? { onEdit: handleEdit, onDelete: handleDelete } : {});
 
+// May the user edit this rabbi's details? (the server checks this again)
+const canEditRabbi = (rabbi) => {
+    if (!isAdminPage || !currentUser) return false;
+    if (currentUser.role === 'admin') return true; // the main manager: every rabbi
+    return currentUser.role === 'rabbi' && rabbi._id === currentUser.rabbiProfile; // a rabbi: only himself
+};
+
+const handleEditRabbi = (rabbi) => openSimpleDialog({
+    title: 'עריכת פרטי הרב',
+    submitLabel: 'שמור',
+    fields: [
+        { name: 'name', label: 'שם הרב', type: 'text', value: rabbi.name, required: true },
+        { name: 'imageUrl', label: 'קישור לתמונה', type: 'url', value: rabbi.imageUrl },
+        { name: 'bio', label: 'על הרב', type: 'textarea', value: rabbi.bio }
+    ],
+    onSave: async (data) => {
+        await updateRabbi(rabbi._id, data);
+        await loadRabbisSection(); // draw the cards again with the new details
+    }
+});
+
+// Only the main manager: delete a rabbi completely - his login, his profile and all his shiurim
+const handleDeleteManager = async (rabbi, user) => {
+    const ok = confirm(
+        `למחוק את "${rabbi.name}" מהמערכת?\n` +
+        'פעולה זו תמחק גם את כל השיעורים שלו, ואי אפשר לבטל אותה.'
+    );
+    if (!ok) return;
+
+    try {
+        await deleteUser(user._id);
+        await Promise.all([
+            loadRabbisSection(),
+            loadShiurim({}, true) // the shiurim of this rabbi are gone too
+        ]);
+    } catch (error) {
+        alert(error.message);
+    }
+};
+
+
 const loadRabbisSection = async () => {
-    const rabbis = await getAllRabbis();
+    const isMainManager = isAdminPage && currentUser?.role === 'admin';
+
+    // The users are needed only by the main manager, to connect each rabbi to his user
+    const [rabbis, users] = await Promise.all([
+        getAllRabbis(),
+        isMainManager ? getAllUsers().catch(() => []) : []
+    ]);
+
     const rabbisContainer = document.getElementById('rabbis-container');
-    
     if (!rabbisContainer) return;
 
     rabbisContainer.replaceChildren(); // clear existing content
-    const fragment = document.createDocumentFragment(); 
+    const fragment = document.createDocumentFragment();
 
     rabbis.forEach(rabbi => {
-        const rabbiCard = createRabbiCard(rabbi);
-        
+        // The main rabbi has no user in the database, so he gets no delete button
+        const user = users.find(u => u.rabbiProfile?._id === rabbi._id);
+
+        const rabbiCard = createRabbiCard(rabbi, {
+            onEdit: canEditRabbi(rabbi) ? handleEditRabbi : undefined,
+            onDelete: user ? () => handleDeleteManager(rabbi, user) : undefined
+        });
+
         rabbiCard.addEventListener('click', () => {
-            console.log('התבצעה לחיצה על הרב, ID:', rabbi._id);
             loadShiurim({ rabbi: rabbi._id }, true);
         });
 
@@ -139,6 +218,7 @@ const loadShiurim = async (filters = {}, isReset = false) => {
 
 const initShiurimPage = async () => {
     initAddButton();
+    initAddUserButton();
     try {
         // Fetch rabbis and initial shiurim in parallel for optimal performance
         await Promise.all([

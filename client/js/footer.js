@@ -63,9 +63,9 @@ const createFooterNav = () => {
 
     const infoList = document.createElement('ul');
     const infoItems = [
-        'כתובת: רחוב בית הכנסת 12',
-        'טלפון: 03-1234567',
-        'דוא"ל: info@yehezkel.org'
+        'כתובת: רחוב ארנון 2 תל אביב',
+        'טלפון ליצירת קשר: 0556748143',
+        'דוא"ל:arie@rabanut. '
     ];
 
     infoItems.forEach(text => {
