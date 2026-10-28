@@ -1,0 +1,34 @@
+import { getCurrentUser, logout } from '../../services/authService.js';
+import { getAllRabbis } from '../../services/rabbiService.js';
+
+const user = getCurrentUser();
+
+// The greeting: the rabbi's name for a rabbi or the manager, and "גבאי" for a gabbai
+const buildGreeting = async (user) => {
+    if (user.role === 'gabbai') return 'שלום גבאי';
+
+    if (user.rabbiProfile) {
+        try {
+            const rabbis = await getAllRabbis();
+            const rabbi = rabbis.find(r => r._id === user.rabbiProfile);
+            if (rabbi) return `שלום ${rabbi.name}`;
+        } catch {
+            // if the rabbis could not be loaded, the general greeting below is used
+        }
+    }
+    return user.role === 'admin' ? 'שלום מנהל' : 'שלום';
+};
+
+if (!user || !localStorage.getItem('token')) {
+    // Not logged in - back to the login page
+    window.location.href = './login.html';
+} else {
+    buildGreeting(user).then(text => {
+        document.getElementById('admin-greeting').textContent = text;
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        logout();
+        window.location.href = './login.html';
+    });
+}

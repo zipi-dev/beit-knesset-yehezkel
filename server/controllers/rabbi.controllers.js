@@ -1,20 +1,12 @@
 import { isValidObjectId } from "mongoose";
 import {Rabbi} from "../models/rabbi.model.js";
 
+// The only fields a rabbi profile can be edited with.
+const RABBI_FIELDS = ['name', 'imageUrl', 'bio'];
 export const getAllRabbis = async (req, res, next) => {
     try {
         const rabbis = await Rabbi.find({});
         res.status(200).json(rabbis);
-    } catch (err) {
-        next({ status: 500, error: err, type: 'server error' });
-    }
-};
-
-export const addRabbi = async (req, res, next) => {
-    try {
-        const newRabbi = new Rabbi(req.body);
-        await newRabbi.save();
-        res.status(201).json(newRabbi);
     } catch (err) {
         next({ status: 500, error: err, type: 'server error' });
     }
@@ -56,9 +48,24 @@ export const updateRabbi = async (req, res, next) => {
                 status: 400
             });
         }
-        const updatedRabbi = await Rabbi.findByIdAndUpdate(id, req.body, {
-            new: true,   // Return the updated document 
-            runValidators: true // Ensure that the update adheres to the schema's validation rules
+
+        if (req.myUser.role === 'rabbi') {
+            const ownId = req.myUser.rabbiProfile?.toString();
+            if (ownId !== id) {
+                return next({
+                    status: 403,
+                    type: 'authorization error',
+                    error: new Error('You do not have permission to update this rabbi')
+                });
+            }
+        }
+
+                const update = Object.fromEntries(
+            RABBI_FIELDS.filter(f => req.body[f] !== undefined).map(f => [f, req.body[f]])
+        );
+        const updatedRabbi = await Rabbi.findByIdAndUpdate(id, update, {
+            returnDocument: 'after',
+            runValidators: true
         });
 
         if (!updatedRabbi) {
