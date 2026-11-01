@@ -43,10 +43,22 @@ export const createEventCard = (event) => {
         link.classList.add('event-image-link', 'event-image-link--photo');
 
         const image = document.createElement('img');
-        image.src = optimizeCloudinaryUrl(event.imageUrl);
         image.alt = event.name;
         image.loading = 'lazy';
         image.classList.add('event-image');
+
+        // אם הכתובת המוקטנת נכשלה (למשל Cloudinary חוסם המרות "תוך כדי תנועה") - מנסים את התמונה המקורית.
+        // אם גם היא נכשלת - מסירים את המסגרת הריקה, כדי שלא יוצג ריבוע שבור.
+        let triedOriginal = false;
+        image.addEventListener('error', () => {
+            if (!triedOriginal) {
+                triedOriginal = true;
+                image.src = event.imageUrl;
+                return;
+            }
+            link.remove();
+        });
+        image.src = optimizeCloudinaryUrl(event.imageUrl);
 
         link.appendChild(image);
         card.appendChild(link);

@@ -1,3 +1,5 @@
+import createHeader from './header.js';
+import createFooter from './footer.js';
 import {getCurrentUser} from '../services/authService.js';
 import {createShiurCard} from './shiur.js';
 import {getAllRabbis, updateRabbi} from '../services/rabbiService.js';
@@ -250,4 +252,11 @@ const initShiurimPage = async () => {
 
 //when the DOM is fully loaded, initialize the shiurim page
 document.addEventListener('DOMContentLoaded', initShiurimPage);
+
+// The site header and footer - only on the public page (the admin page has its own header)
+document.addEventListener('DOMContentLoaded', () => {
+    if (isAdminPage) return;
+    createHeader();   // prepend - goes to the top of the body
+    createFooter();   // append  - goes to the end of the body
+});
 
