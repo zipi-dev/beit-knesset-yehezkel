@@ -13,8 +13,38 @@ const createFooterCta = () => {
 
     const subtitle = document.createElement('p');
     subtitle.textContent = 'תפילות במניין, שיעורי תורה ואווירה קהילתית חמה';
+const donateBox = document.createElement('a');
+donateBox.classList.add('donate-box');
+donateBox.href = 'https://www.matara.pro/nedarimplus/online/?mosad=7001638';
+donateBox.target = '_blank';
+donateBox.rel = 'noopener';
 
-    section.append(title, subtitle);
+// אייקון לב
+const svgNS = 'http://www.w3.org/2000/svg';
+const heart = document.createElementNS(svgNS, 'svg');
+heart.setAttribute('viewBox', '0 0 24 24');
+heart.setAttribute('width', '56');
+heart.setAttribute('height', '56');
+heart.setAttribute('fill', 'currentColor');
+heart.classList.add('donate-icon');
+const heartPath = document.createElementNS(svgNS, 'path');
+heartPath.setAttribute('d', 'M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z');
+heart.appendChild(heartPath);
+
+const donateText = document.createElement('span');
+donateText.classList.add('donate-text');
+const donateTitle = document.createElement('strong');
+donateTitle.textContent = 'תרמו לבית הכנסת';
+const donateSub = document.createElement('small');
+donateSub.textContent = 'כל תרומה עוזרת לנו להמשיך';
+donateText.append(donateTitle, donateSub);
+
+const donateBtn = document.createElement('span');
+donateBtn.classList.add('donate-btn');
+donateBtn.textContent = 'לתרומה';
+
+donateBox.append(heart, donateText, donateBtn);
+section.append(title, subtitle, donateBox);
     return section;
 };
 
