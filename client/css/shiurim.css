@@ -50,7 +50,7 @@ img {
 }
 
 /* ---------- Header ---------- */
-header {
+header:not(.site-header) {
     position: sticky;
     top: 0;
     z-index: 20;
@@ -62,7 +62,7 @@ header {
     border-bottom: 1px solid var(--gold-soft);
 }
 
-header h1 {
+header:not(.site-header) h1 {
     margin: 0;
     font-family: var(--font-title);
     font-size: 1.45rem;
@@ -70,7 +70,7 @@ header h1 {
     line-height: 1.25;
 }
 
-header p {
+header:not(.site-header) p {
     margin: 2px 0 0;
     color: var(--brown-soft);
     font-size: 0.8rem;
@@ -420,15 +420,15 @@ main > section:last-of-type {
 
 /* ---------- Tablet (from 600px) ---------- */
 @media (min-width: 600px) {
-    header {
+    header:not(.site-header) {
         padding: 16px 90px 14px;
     }
 
-    header h1 {
+    header:not(.site-header) h1 {
         font-size: 1.8rem;
     }
 
-    header p {
+    header:not(.site-header) p {
         font-size: 0.92rem;
     }
 
@@ -470,7 +470,7 @@ main > section:last-of-type {
 
 /* ---------- Computer (from 960px) ---------- */
 @media (min-width: 960px) {
-    header h1 {
+    header:not(.site-header) h1 {
         font-size: 2.2rem;
     }
 

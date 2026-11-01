@@ -1,6 +1,25 @@
 /* =====================================================
    opinions.css - חוות דעת (opinions.html)
    ===================================================== */
+main > h1 { margin-bottom: 22px; font-size: 2rem; font-weight: 700; text-align: center; color: var(--ink); }
+main > h1::after { content: ''; display: block; width: 48px; height: 3px; margin: 9px auto 0; background: var(--gold-500); border-radius: 2px; }
+
+/* טופס הוספת חוות דעת */
+#opinion-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+#opinion-form h3 { margin-bottom: 6px; font-size: 1.3rem; color: var(--ink); }
+#opinion-form button[type="submit"] { align-self: flex-start; margin-top: 8px; }
+
 #opinions-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -16,12 +35,13 @@
     padding: 22px 22px 18px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-right: 5px solid var(--gold-500);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    transition: transform 0.25s, box-shadow 0.25s;
+    transition: box-shadow 0.25s, border-color 0.25s;
 }
-.opinion-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+@media (hover: hover) {
+    .opinion-card:hover { border-color: var(--gold-500); box-shadow: var(--shadow-hover); }
+}
 /* סימן ציטוט דקורטיבי */
 .opinion-card::after {
     content: "\201D";
@@ -35,7 +55,7 @@
     pointer-events: none;
 }
 
-.opinion-author { font-size: 1.15rem; color: var(--gold-800); }
+.opinion-author { font-size: 1.1rem; color: var(--ink); }
 .opinion-comment { flex: 1; white-space: pre-wrap; overflow-wrap: anywhere; }
 .opinion-date { font-size: 0.85rem; color: var(--ink-soft); }
 
@@ -44,10 +64,9 @@
     min-height: 38px;
     padding: 6px 18px;
     color: var(--gold-800);
-    background: var(--gold-50);
-    border: 1.5px solid var(--gold-300);
-    box-shadow: none;
+    background: transparent;
+    border: 1.5px solid var(--gold-500);
 }
-.like-btn:hover { color: var(--ink); background: var(--gold-200); border-color: var(--gold-400); }
-/* אחרי שהמבקר כבר נתן לייק - נגיעת טורקיז */
-.like-btn.liked, .like-btn.liked:disabled { opacity: 1; color: #fff; background: var(--turq-700); border-color: var(--turq-700); cursor: default; }
+.like-btn:hover { color: var(--ink); background: var(--gold-100); border-color: var(--gold-500); }
+/* אחרי שהמבקר כבר נתן לייק */
+.like-btn.liked, .like-btn.liked:disabled { opacity: 1; color: #fff; background: var(--blue-deep); border-color: var(--blue-deep); cursor: default; }

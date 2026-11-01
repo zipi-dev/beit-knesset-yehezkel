@@ -4,7 +4,7 @@
 #events-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 26px;
+    gap: 22px;
 }
 #events-container > p { grid-column: 1 / -1; text-align: center; color: var(--ink-soft); }
 
@@ -16,13 +16,17 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    transition: transform 0.25s, box-shadow 0.25s;
+    transition: box-shadow 0.25s, border-color 0.25s;
 }
-.event-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+@media (hover: hover) {
+    .event-card:hover { border-color: var(--gold-500); box-shadow: var(--shadow-hover); }
+}
 
-.event-image-link { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--gold-100); }
+.event-image-link { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--border); }
 .event-image { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-.event-card:hover .event-image { transform: scale(1.05); }
+@media (hover: hover) {
+    .event-card:hover .event-image { transform: scale(1.04); }
+}
 
 /* כפתור "נגן" קטן על התמונה (רק לסרטוני יוטיוב) */
 .event-image-link::after {
@@ -32,13 +36,12 @@
     left: 50%;
     display: grid;
     place-items: center;
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
     padding-left: 4px;
     font-size: 18px;
-    color: var(--gold-200);
-    background: rgba(51, 38, 26, 0.72);
-    border: 2px solid var(--gold-400);
+    color: var(--surface);
+    background: rgba(59, 42, 28, 0.55);
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
@@ -46,24 +49,23 @@
 /* תמונה שהועלתה - בלי כפתור הנגן */
 .event-image-link--photo::after { display: none; }
 
-.event-info { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 20px 22px 22px; border-top: 4px solid var(--gold-500); }
-.event-image-link + .event-info { border-top: 3px solid var(--gold-500); }
-.event-title { font-size: 1.4rem; font-weight: 700; color: var(--gold-800); }
+.event-info { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 16px 20px 20px; }
+.event-title { font-size: 1.25rem; font-weight: 700; line-height: 1.4; color: var(--ink); }
 
-/* תגית התאריך - נגיעת טורקיז */
+/* תגית התאריך */
 .event-date {
     align-self: flex-start;
-    padding: 3px 14px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: var(--turq-900);
-    background: var(--turq-100);
-    border: 1px solid var(--turq-300);
+    padding: 2px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--gold-800);
+    background: var(--gold-100);
+    border: 1px solid var(--gold-200);
     border-radius: 999px;
 }
 .event-desc { color: var(--ink); }
 .event-photographer { font-size: 0.85rem; color: var(--ink-soft); }
-.event-media-link { margin-top: auto; align-self: flex-start; font-weight: 700; text-decoration: none; color: var(--gold-700); }
-.event-media-link:hover { color: var(--turq-700); text-decoration: underline; }
+.event-media-link { margin-top: auto; align-self: flex-start; font-weight: 500; text-decoration: none; color: var(--gold-700); }
+.event-media-link:hover { color: var(--blue-deep); text-decoration: underline; }
 
 @media (max-width: 600px) { #events-container { grid-template-columns: 1fr; } }

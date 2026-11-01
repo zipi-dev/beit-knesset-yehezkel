@@ -1,6 +1,7 @@
 /* =====================================================
    base.css - הבסיס המשותף לכל האתר (ציבורי + מנהל)
-   פלטה: זהב ושמנת, עם נגיעות קטנות של טורקיז.
+   הסגנון נלקח מדף השיעורים: שמנת, זהב וחום, כרטיסים עדינים,
+   כפתורים בצורת גלולה, ונגיעות כחולות (לוגו ומיקוד).
    כל קובץ עיצוב אחר בנוי על המשתנים שמוגדרים כאן.
    כדי לשנות את גוון הזהב של כל האתר - משנים רק כאן.
    ===================================================== */
@@ -22,34 +23,36 @@
     /* שמנת */
     --cream-50:  #fffdf8;
     --cream-100: #faf6ee;
-    --cream-200: #f3e9d2;
+    --cream-200: #f3ead6;
 
-    /* טורקיז - נגיעות בלבד (תגיות תאריך, מוקד, קישוטים) */
-    --turq-100: #d9f1f1;
-    --turq-300: #7fcfd3;
-    --turq-500: #1b9aa6;
-    --turq-700: #0c6f79;
-    --turq-900: #0a4e56;
+    /* כחול - נגיעות בלבד (מיקוד, לייק, הודעות הצלחה). שמות --turq-* נשארו כדי שקבצים ישנים ימשיכו לעבוד */
+    --blue:      #3f86c9;
+    --blue-soft: #e6f0fa;
+    --blue-deep: #1f4f82;
+    --turq-100: #e6f0fa;
+    --turq-300: #a9cdee;
+    --turq-500: #3f86c9;
+    --turq-700: #2b6aa8;
+    --turq-900: #1f4f82;
 
     /* טקסט */
-    --ink: #33261a;
-    --ink-soft: #6f5d4a;
+    --ink: #3b2a1c;
+    --ink-soft: #7a6552;
 
     --bg: var(--cream-100);
-    --surface: #ffffff;
-    --border: #eadfc4;
+    --surface: #fffdf8;
+    --border: #e9dcb8;
     --danger: #a93226;
 
+    /* נשארו להתאמה לאחור - כבר לא בשימוש בעיצוב החדש */
     --gold-gradient: linear-gradient(135deg, #b8892c 0%, #d4ae55 48%, #e8cf8a 100%);
     --gold-gradient-soft: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+    --pattern-star: none;
 
-    /* דוגמת מגן דוד עדינה מאוד לרקע הבאנרים */
-    --pattern-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%234a3510' stroke-opacity='.09' stroke-width='1.2'%3E%3Cpath d='M32 14l15.6 27H16.4z'/%3E%3Cpath d='M32 50L16.4 23h31.2z'/%3E%3C/g%3E%3C/svg%3E");
-
-    --radius: 14px;
-    --radius-sm: 8px;
-    --shadow: 0 4px 16px rgba(107, 79, 23, 0.10);
-    --shadow-hover: 0 12px 30px rgba(107, 79, 23, 0.20);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 4px 14px rgba(59, 42, 28, 0.08);
+    --shadow-hover: 0 10px 24px rgba(59, 42, 28, 0.16);
     --maxw: 1180px;
 
     --font-title: "Frank Ruhl Libre", "David Libre", "David", Georgia, serif;
@@ -68,6 +71,7 @@ body {
     line-height: 1.6;
     color: var(--ink);
     background: var(--bg);
+    -webkit-tap-highlight-color: transparent;
 }
 
 main {
@@ -75,57 +79,45 @@ main {
     width: 100%;
     max-width: var(--maxw);
     margin: 0 auto;
-    padding: 32px 20px 56px;
+    padding: 28px 20px 56px;
 }
 
 img { max-width: 100%; }
 a { color: var(--gold-700); }
-a:hover { color: var(--turq-700); }
+a:hover { color: var(--blue-deep); }
 .hidden { display: none !important; }
 
 /* ---------- כותרות ---------- */
 h1, h2, h3 { font-family: var(--font-title); line-height: 1.3; }
 
 main h2 {
-    margin-bottom: 24px;
-    font-size: 1.9rem;
+    margin-bottom: 22px;
+    font-size: 1.6rem;
     font-weight: 700;
     text-align: center;
-    color: var(--gold-800);
+    color: var(--ink);
 }
-/* קו זהב עם יהלום טורקיז באמצע */
+/* קו זהב קטן מתחת לכותרת - כמו בדף השיעורים */
 main h2::after, .page-header h1::after {
-    content: '\25C6';
+    content: '';
     display: block;
-    width: 150px;
-    margin: 10px auto 0;
-    font-size: 0.6rem;
-    line-height: 1;
-    text-align: center;
-    color: var(--turq-500);
-    background:
-        linear-gradient(90deg, transparent, var(--gold-400)) 0 50% / 62px 2px no-repeat,
-        linear-gradient(270deg, transparent, var(--gold-400)) 100% 50% / 62px 2px no-repeat;
+    width: 48px;
+    height: 3px;
+    margin: 9px auto 0;
+    background: var(--gold-500);
+    border-radius: 2px;
 }
 
-/* ---------- באנר עליון לכל דף ---------- */
+/* ---------- כותרת עליונה לכל דף ---------- */
 .page-header {
-    position: relative;
-    overflow: hidden;
-    padding: 56px 20px 60px;
+    padding: 44px 20px 38px;
     text-align: center;
-    color: var(--gold-900);
-    background: var(--pattern-star), var(--gold-gradient);
-    border-bottom: 4px solid var(--gold-700);
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--cream-200), var(--bg));
+    border-bottom: 1px solid var(--border);
 }
-.page-header h1 { font-size: 2.5rem; font-weight: 900; color: #3a2a12; }
-.page-header h1::after {
-    color: var(--turq-700);
-    background:
-        linear-gradient(90deg, transparent, var(--cream-50)) 0 50% / 62px 2px no-repeat,
-        linear-gradient(270deg, transparent, var(--cream-50)) 100% 50% / 62px 2px no-repeat;
-}
-.page-header p { margin-top: 14px; font-size: 1.15rem; font-weight: 500; color: var(--gold-900); }
+.page-header h1 { font-size: 2.3rem; font-weight: 700; color: var(--ink); }
+.page-header p { margin-top: 12px; font-size: 1.05rem; color: var(--ink-soft); }
 
 /* ---------- כפתורים ---------- */
 button, .btn {
@@ -134,27 +126,27 @@ button, .btn {
     justify-content: center;
     gap: 8px;
     min-height: 44px;
-    padding: 10px 26px;
+    padding: 10px 28px;
     font: inherit;
-    font-weight: 700;
+    font-weight: 500;
     color: var(--ink);
     text-decoration: none;
-    background: linear-gradient(180deg, var(--gold-400), var(--gold-500));
-    border: 1px solid var(--gold-600);
+    background: var(--gold-500);
+    border: 1.5px solid var(--gold-500);
     border-radius: 999px;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
 }
 button:hover, .btn:hover {
     color: var(--ink);
-    background: linear-gradient(180deg, var(--gold-300), var(--gold-400));
-    box-shadow: var(--shadow);
+    background: var(--gold-400);
+    border-color: var(--gold-400);
 }
 button:active, .btn:active { transform: translateY(1px); }
-button:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
 
-.btn-outline { color: var(--gold-800); background: transparent; border: 2px solid var(--gold-500); }
-.btn-outline:hover { color: var(--ink); background: var(--gold-200); }
+.btn-outline { color: var(--ink); background: transparent; border: 1.5px solid var(--gold-500); }
+.btn-outline:hover { color: var(--ink); background: var(--gold-500); border-color: var(--gold-500); }
 
 /* ---------- טפסים ---------- */
 .form-card {
@@ -163,11 +155,10 @@ button:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
     padding: 28px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-top: 5px solid var(--gold-500);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
 }
-.form-card h2, .form-card h3 { margin-bottom: 18px; font-size: 1.4rem; color: var(--gold-800); }
+.form-card h2, .form-card h3 { margin-bottom: 18px; font-size: 1.35rem; color: var(--ink); }
 .form-card h2::after { display: none; }
 .form-card form, form.form-card { display: flex; flex-direction: column; gap: 16px; }
 
@@ -175,27 +166,27 @@ label { display: block; margin-bottom: 6px; font-weight: 500; }
 
 input, select, textarea {
     width: 100%;
-    padding: 11px 14px;
+    padding: 12px 16px;
     font: inherit;
     font-size: 16px; /* 16px מונע זום אוטומטי באייפון */
     color: var(--ink);
     background: #fff;
-    border: 1.5px solid var(--gold-200);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 textarea { min-height: 110px; resize: vertical; }
 input:focus, select:focus, textarea:focus {
-    border-color: var(--turq-500);
-    box-shadow: 0 0 0 4px rgba(27, 154, 166, 0.18);
+    border-color: var(--gold-500);
+    box-shadow: 0 0 0 4px rgba(196, 154, 60, 0.2);
 }
 
 /* ---------- כרטיס כללי + גריד ---------- */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
+    gap: 22px;
 }
 .card {
     position: relative;
@@ -205,26 +196,22 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    transition: transform 0.25s, box-shadow 0.25s;
+    transition: box-shadow 0.25s, border-color 0.25s;
 }
-.card::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 4px;
-    background: var(--gold-gradient-soft);
+/* אפקט ריחוף רק איפה שיש עכבר */
+@media (hover: hover) {
+    .card:hover { border-color: var(--gold-500); box-shadow: var(--shadow-hover); }
 }
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
 
-hr { margin: 44px 0; border: none; border-top: 2px dashed var(--gold-200); }
+hr { margin: 40px 0; border: none; border-top: 1px solid var(--border); }
 .error-message { padding: 20px; text-align: center; font-weight: 700; color: var(--danger); }
 
-:focus-visible { outline: 3px solid var(--turq-500); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 @media (max-width: 600px) {
-    main { padding: 24px 14px 44px; }
-    .page-header { padding: 40px 16px 44px; }
-    .page-header h1 { font-size: 1.9rem; }
+    main { padding: 22px 14px 44px; }
+    .page-header { padding: 32px 16px 28px; }
+    .page-header h1 { font-size: 1.8rem; }
     .form-card { padding: 20px; }
 }
