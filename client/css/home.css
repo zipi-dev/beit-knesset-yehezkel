@@ -1,17 +1,41 @@
 /* =====================================================
    home.css - דף הבית (index.html). נשען על המשתנים של base.css
    ===================================================== */
+
+/* ---------- אזור הפתיחה (hero) עם תמונת בית הכנסת ברקע ----------
+   כדי להחליף תמונה - משנים את הכתובת ב-url(...) בכלל .hero::before
+   כדי להבליט את התמונה יותר - מקטינים את המספרים האחרונים ב-rgba בכלל .hero::after
+   כדי להחשיך אותה יותר - מגדילים אותם
+   כדי להוסיף טשטוש קל - מוסיפים ל-.hero::before את השורה: filter: blur(3px);  */
 .hero {
-    padding: 72px 20px 64px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 110px 20px 96px;
     text-align: center;
-    color: var(--ink);
-    background: radial-gradient(ellipse at 50% 0%, var(--gold-100) 0%, var(--bg) 72%);
-    border-bottom: 1px solid var(--border);
+    color: var(--cream-50);
+    background: var(--ink);
 }
-.hero h1 { font-size: 3rem; font-weight: 700; color: var(--ink); }
-.hero h1::after { content: ''; display: block; width: 64px; height: 3px; margin: 14px auto 0; background: var(--gold-500); border-radius: 2px; }
-.hero p { max-width: 580px; margin: 18px auto 0; font-size: 1.2rem; color: var(--ink-soft); }
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: url('../assest/images/beitKneset.png') center / cover no-repeat;
+}
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(40, 28, 18, 0.30) 0%, rgba(40, 28, 18, 0.50) 100%);
+}
+.hero h1 { font-size: 3rem; font-weight: 700; color: var(--cream-50); text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55); }
+.hero h1::after { content: ''; display: block; width: 64px; height: 3px; margin: 14px auto 0; background: var(--gold-300); border-radius: 2px; }
+.hero p { max-width: 580px; margin: 18px auto 0; font-size: 1.2rem; color: var(--cream-100); text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
 .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 30px; }
+.hero .btn-outline { color: var(--cream-50); border-color: var(--gold-300); background: rgba(255, 253, 248, 0.10); }
+.hero .btn-outline:hover { color: var(--ink); background: var(--gold-300); border-color: var(--gold-300); }
 
 /* פס זמני שבת בדף הבית (נוצר ב-js/home.js) */
 .shabbat-strip { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
@@ -37,7 +61,7 @@
 .home-card:hover h3 { color: var(--gold-700); }
 
 @media (max-width: 600px) {
-    .hero { padding: 48px 16px 44px; }
+    .hero { padding: 72px 16px 64px; }
     .hero h1 { font-size: 2.1rem; }
 }
 
